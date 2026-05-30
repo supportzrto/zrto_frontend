@@ -3,32 +3,64 @@ import DashboardLayout from "../layouts/DashboardLayout";
 
 export default function Admin() {
   const [stats, setStats] = useState(null);
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [payments, setPayments] = useState([]);
+  const [leads, setLeads] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:8000/me", { credentials: "include" })
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) { setStats(null); }
-        else { setStats(data); }
+    async function loadAdminData() {
+      try {
+        const [statsRes, usersRes, paymentsRes, leadsRes] = await Promise.all([
+          fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, { credentials: "include" }),
+          fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, { credentials: "include" }),
+          fetch(`${import.meta.env.VITE_API_URL}/api/admin/payments`, { credentials: "include" }),
+          fetch(`${import.meta.env.VITE_API_URL}/api/admin/leads`, { credentials: "include" }),
+        ]);
+
+
+
+        if (statsRes.status === 403) {
+          setStats(null);
+          setLoading(false);
+          return;
+        }
+
+        setStats(await statsRes.json());
+        setUsers(await usersRes.json());
+        setPayments(await paymentsRes.json());
+        setLeads(await leadsRes.json());
+
+      } catch (err) {
+        console.error(err);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    }
+
+    loadAdminData();
   }, []);
 
-  if (!loading && !stats) {
+  if (loading) {
     return (
       <DashboardLayout>
-        <div className="flex flex-col items-center justify-center py-24">
-          <div className="text-6xl mb-4">🚫</div>
-          <h2 className="text-2xl font-extrabold mb-2" style={{ color: "#dc2626" }}>Access Denied</h2>
-          <p style={{ color: "#6b7280" }}>You don't have admin privileges to view this page.</p>
+        <div className="text-center py-20">Loading admin data...</div>
+      </DashboardLayout>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <DashboardLayout>
+        <div className="text-center py-20 text-red-500 font-bold">
+          Failed to load admin data
         </div>
       </DashboardLayout>
     );
   }
+
+
 
   return (
     <DashboardLayout>
@@ -104,6 +136,90 @@ export default function Admin() {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="mt-10">
+            <h2 className="font-bold text-lg mb-3">👥 Users</h2>
+            <table className="w-full text-sm bg-white rounded-xl shadow">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="p-2">Email</th>
+                  <th className="p-2">Plan</th>
+                  <th className="p-2">Usage</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((u, i) => (
+                  <tr key={i} className="border-t text-center">
+                    <td className="p-2">{u.email}</td>
+                    <td className="p-2">{u.plan}</td>
+                    <td className="p-2">{u.usage}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-10">
+            <h2 className="font-bold text-lg mb-3">💰 Payments</h2>
+            <table className="w-full text-sm bg-white rounded-xl shadow">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="p-2">User</th>
+                  <th className="p-2">Amount</th>
+                  <th className="p-2">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {payments.map((p, i) => (
+                  <tr key={i} className="border-t text-center">
+                    <td className="p-2">{p.user_id}</td>
+                    <td className="p-2">₹{p.amount}</td>
+                    <td className="p-2">
+                      {p.date ? new Date(p.date).toLocaleDateString() : "-"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <br></br>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="font-bold text-lg">🚀 Early Access Leads</h2>
+            <button
+              onClick={() => {
+                window.open(
+                  `${import.meta.env.VITE_API_URL}/api/admin/export-leads`,
+                  "_blank"
+                );
+              }}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg"
+            >
+              Export to Excel 📥
+            </button>
+          </div>
+          <div className="mt-10 mb-10">
+            <h2 className="font-bold text-lg mb-3">🚀 Early Access Leads</h2>
+            <table className="w-full text-sm bg-white rounded-xl shadow">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="p-2">Name</th>
+                  <th className="p-2">Email</th>
+                  <th className="p-2">Brand</th>
+                  <th className="p-2">Orders</th>
+                  <th className="p-2">Phone</th>
+                </tr>
+              </thead>
+              <tbody>
+                {leads.map((l, i) => (
+                  <tr key={i} className="border-t text-center">
+                    <td className="p-2">{l.name}</td>
+                    <td className="p-2">{l.email}</td>
+                    <td className="p-2">{l.brand}</td>
+                    <td className="p-2">{l.orders}</td>
+                    <td className="p-2">{l.phone}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </>
       )}

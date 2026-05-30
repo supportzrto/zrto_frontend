@@ -33,6 +33,21 @@ export const logoutUser = async () => {
   return res.json();
 };
 
+export async function getCurrentUser() {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
+      credentials: "include",
+    });
+
+    if (res.status === 401) return null;
+
+    return await res.json();
+  } catch (err) {
+    console.error("Auth error:", err);
+    return null;
+  }
+}
+
 // ── USAGE ──
 export const getUsage = async () => {
   const res = await fetch(`${API_URL}/usage`, {

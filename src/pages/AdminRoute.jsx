@@ -1,9 +1,21 @@
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { getCurrentUser } from "../api/auth";
 
 export default function AdminRoute({ children }) {
-  const role = localStorage.getItem("role");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (role !== "admin") {
+  useEffect(() => {
+    getCurrentUser().then((data) => {
+      setUser(data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return null;
+
+  if (!user || user.role !== "admin") {
     return <Navigate to="/dashboard" />;
   }
 

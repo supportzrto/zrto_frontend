@@ -1,18 +1,18 @@
 import { useNavigate, useLocation } from "react-router-dom";
 
 const pageTitles = {
-  "/dashboard":  { title: "Dashboard",          icon: "📊" },
-  "/predict":    { title: "Predict Orders",      icon: "🤖" },
-  "/pricing":    { title: "Pricing",             icon: "💎" },
-  "/history":    { title: "Prediction History",  icon: "📋" },
-  "/api-access": { title: "API Access",          icon: "🔑" },
-  "/usage":      { title: "Usage",               icon: "📈" },
-  "/api":        { title: "API Integration",     icon: "⚡" },
-  "/account":    { title: "Account",             icon: "👤" },
-  "/admin":      { title: "Admin Dashboard",     icon: "🛡️" },
+  "/dashboard": { title: "Dashboard", icon: "📊" },
+  "/predict": { title: "Predict Orders", icon: "🤖" },
+  "/pricing": { title: "Pricing", icon: "💎" },
+  "/history": { title: "Prediction History", icon: "📋" },
+  "/api-access": { title: "API Access", icon: "🔑" },
+  "/usage": { title: "Usage", icon: "📈" },
+  "/api": { title: "API Integration", icon: "⚡" },
+  "/account": { title: "Account", icon: "👤" },
+  "/admin": { title: "Admin Dashboard", icon: "🛡️" },
 };
 
-export default function Navbar() {
+export default function Navbar({ user }) {
   const navigate = useNavigate();
   const location = useLocation();
   const page = pageTitles[location.pathname] || { title: "Dashboard", icon: "📊" };
@@ -47,6 +47,10 @@ export default function Navbar() {
         <div className="w-9 h-9 rounded-full flex items-center justify-center font-extrabold text-sm text-white"
           style={{ background: "linear-gradient(135deg, #4f46e5, #7c3aed)" }}>
           U
+        </div>
+
+        <div>
+          Plan: {user?.plan || "free"}
         </div>
 
         {/* Logout */}

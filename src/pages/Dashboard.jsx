@@ -3,27 +3,27 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import MetricCard from "../components/metriccard";
 import UsageBar from "../components/usagebar";
 
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL;
 
-export default function Dashboard() {
+export default function Dashboard({ user }) {
   const [stats, setStats] = useState(null);
   const [usage, setUsage] = useState(null);
   const [loading, setLoading] = useState(true);
-   const [plan, setPlan] = useState("free"); 
+  const plan = user?.plan || "free";
 
   useEffect(() => {
     async function loadData() {
       try {
         const [statsRes, usageRes] = await Promise.all([
           fetch(`${API_URL}/api/stats`, {
-            credentials: "include", // 🔥 important
+            credentials: "include",
           }),
           fetch(`${API_URL}/usage`, {
-            credentials: "include", // 🔥 important
+            credentials: "include",
           }),
         ]);
 
-        // 🔥 handle auth failure
+
         if (statsRes.status === 401 || usageRes.status === 401) {
           window.location.href = "/login";
           return;
@@ -35,10 +35,6 @@ export default function Dashboard() {
         setStats(statsData);
         setUsage(usageData);
 
-        // ✅ get plan from backend (safe)
-        if (statsData.plan) {
-          setPlan(statsData.plan);
-        }
 
       } catch (err) {
         console.error("Dashboard load error:", err);
@@ -49,7 +45,7 @@ export default function Dashboard() {
 
     loadData();
   }, []);
-  
+
   return (
     <DashboardLayout>
 
@@ -65,7 +61,9 @@ export default function Dashboard() {
         <div className="hidden md:flex items-center gap-3">
           <div className="text-right">
             <div className="text-xs font-bold uppercase tracking-widest text-indigo-300 mb-1">Current Plan</div>
-            <div className="text-lg font-extrabold text-white capitalize">{plan}</div>
+            <div className="text-xs text-indigo-200 mt-1">
+              Expires on: {user?.expiry ? new Date(user.expiry).toLocaleDateString() : "—"}
+            </div>
           </div>
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl"
             style={{ background: "rgba(255,255,255,0.15)" }}>

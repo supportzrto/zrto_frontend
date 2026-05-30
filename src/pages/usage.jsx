@@ -116,7 +116,7 @@ export default function UsagePage() {
               Upgrade to Pro for 5,000 predictions/month, full API access, and priority support.
             </p>
             <div className="text-2xl font-extrabold mb-5" style={{ color: "#ea580c" }}>
-              ₹999 <span className="text-sm font-semibold" style={{ color: "#9a3412" }}>/month</span>
+              ₹4999 <span className="text-sm font-semibold" style={{ color: "#9a3412" }}>/month</span>
             </div>
             <Link to="/pricing"
               className="inline-block px-6 py-3 rounded-xl font-extrabold text-sm text-white transition-all hover:scale-105"

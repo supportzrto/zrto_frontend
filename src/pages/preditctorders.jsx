@@ -7,60 +7,59 @@ export default function PredictOrders() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
-  const [limitError, setLimitError] = useState(null); 
+  const [limitError, setLimitError] = useState(null);
   const [error, setError] = useState(null);
 
   const uploadFile = async () => {
-    if (!file) { alert("Please upload a CSV file"); return; }
+    if (!file) {
+      alert("Please upload a CSV file");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
+
     setLoading(true);
     setResult(null);
-    setLimitError(null); 
+    setLimitError(null);
+    setError(null);
 
     try {
-      const res = await fetch("http://localhost:8000/predict", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/predict`, {
         method: "POST",
         credentials: "include",
         body: formData,
       });
-      const data = await res.json();
 
+      const data = await res.json(); // ✅ ONLY ONCE
 
       if (data.error === "free_limit_reached") {
-        setLimitError({
-          type: "free_limit_reached",
-          message: data.message,
-          used: data.used,
-          limit: data.limit,
-        });
+        setLimitError(data);
         return;
       }
-
 
       if (data.error === "batch_limit_exceeded") {
-        setLimitError({
-          type: "batch_limit_exceeded",
-          message: data.message,
-          remaining: data.remaining,
-        });
+        setLimitError(data);
         return;
       }
+
+
 
       if (data.error) {
         setError(data.error);
+        return;
       }
 
+      // ✅ success
       setResult(data);
 
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-
   const handleDrop = (e) => {
     e.preventDefault();
     setDragOver(false);
@@ -84,11 +83,11 @@ export default function PredictOrders() {
 
       <div className="grid md:grid-cols-2 gap-8 mb-8">
 
-     
+
         <div className="rounded-2xl p-6 shadow-md" style={{ background: "#fff", border: "2px solid #e0e7ff" }}>
           <h2 className="font-extrabold text-lg mb-5" style={{ color: "#1e1b4b" }}>📁 Upload CSV File</h2>
 
-       
+
           <div
             onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
             onDragLeave={() => setDragOver(false)}
@@ -125,17 +124,28 @@ export default function PredictOrders() {
 
           <button
             onClick={uploadFile}
-            disabled={loading || !file}
+            disabled={loading || !file || limitError?.type === "limit_reached"}
             className="w-full py-3.5 rounded-xl font-extrabold text-white transition-all"
             style={{
-              background: loading || !file
-                ? "#a5b4fc"
-                : "linear-gradient(135deg, #4f46e5, #7c3aed)",
-              boxShadow: loading || !file ? "none" : "0 4px 16px rgba(79,70,229,0.35)",
-              cursor: loading || !file ? "not-allowed" : "pointer",
+              background:
+                loading || !file || limitError?.type === "limit_reached"
+                  ? "#a5b4fc"
+                  : "linear-gradient(135deg, #4f46e5, #7c3aed)",
+              boxShadow:
+                loading || !file || limitError?.type === "limit_reached"
+                  ? "none"
+                  : "0 4px 16px rgba(79,70,229,0.35)",
+              cursor:
+                loading || !file || limitError?.type === "limit_reached"
+                  ? "not-allowed"
+                  : "pointer",
             }}
           >
-            {loading ? "⏳ Processing..." : "🚀 Run AI Prediction"}
+            {limitError?.type === "limit_reached"
+              ? "🚫 Limit Reached"
+              : loading
+                ? "⏳ Processing..."
+                : "🚀 Run AI Prediction"}
           </button>
         </div>
 
@@ -180,7 +190,7 @@ export default function PredictOrders() {
             {limitError.message}
           </p>
 
-   
+
           <div className="flex flex-wrap gap-4 mb-6">
             <div className="rounded-xl px-4 py-3 text-sm"
               style={{ background: "#fee2e2", border: "1px solid #fca5a5" }}>

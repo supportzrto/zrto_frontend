@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PublicPageLayout from "../components/publicPageLayout";
 import PublicLayout from "../layouts/PublicLayout";
 import Footer from "../components/footer";
@@ -98,9 +99,11 @@ export default function Contact() {
             Try ZRTO for free — no credit card required.
           </p>
 
-          <button className="bg-orange-500 hover:bg-orange-600 px-8 py-4 rounded-xl font-bold text-lg">
-            Start Free → 50 Predictions
-          </button>
+          <Link to="/register">
+  <button className="bg-orange-500 hover:bg-orange-600 px-8 py-4 rounded-xl font-bold text-lg">
+    Start Free → 50 Predictions
+  </button>
+</Link>
         </div>
 
       </div>

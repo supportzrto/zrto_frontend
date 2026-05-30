@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 import PublicPageLayout from "../components/publicPageLayout";
 import Footer from "../components/footer";
@@ -34,8 +35,12 @@ export default function About() {
                     </div>
 
                     {/* RIGHT (visual placeholder) */}
-                    <div className="h-64 bg-white/10 rounded-xl flex items-center justify-center">
-                        📊 Illustration / Dashboard
+                    <div className="h-64 bg-white/10 rounded-xl flex items-center justify-center overflow-hidden">
+                        <img
+                            src="/ai_image.png"
+                            alt="Dashboard Illustration"
+                            className="w-full h-full object-cover rounded-xl"
+                        />
                     </div>
 
                 </div>
@@ -44,8 +49,12 @@ export default function About() {
                 <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center px-6 py-20">
 
                     {/* LEFT VISUAL */}
-                    <div className="h-64 bg-white/10 rounded-xl flex items-center justify-center">
-                        ⚙️ AI Engine Visual
+                    <div className="h-64 bg-white/10 rounded-xl flex items-center justify-center overflow-hidden">
+                        <img
+                            src="/ai_image2.png"
+                            alt="AI Engine Visual"
+                            className="w-full h-full object-cover rounded-xl"
+                        />
                     </div>
 
                     {/* RIGHT TEXT */}
@@ -105,9 +114,12 @@ export default function About() {
                         Try ZRTO for free — no credit card required.
                     </p>
 
-                    <button className="bg-orange-500 hover:bg-orange-600 px-8 py-4 rounded-xl font-bold text-lg">
-                        Start Free → 50 Predictions
-                    </button>
+                    <Link to="/register">
+                        <button className="bg-orange-500 hover:bg-orange-600 px-8 py-4 rounded-xl font-bold text-lg">
+                            Start Free → 50 Predictions
+                        </button>
+                    </Link>
+
                 </div>
 
             </div>

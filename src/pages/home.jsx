@@ -33,29 +33,35 @@ const brands = [
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
-  const [form, setForm] = useState({ full_name: "", email: "", brand_name: "", order_volume: "< 500 orders" });
+  const [form, setForm] = useState({ full_name: "", email: "", brand_name: "",phone: "", monthly_orders: "< 500 orders" });
   const [formStatus, setFormStatus] = useState(null);
 
   const handleFormSubmit = async () => {
-    if (!form.full_name || !form.email || !form.brand_name) {
-      alert("Please fill in all fields.");
-      return;
-    }
-    setFormStatus("loading");
     try {
-      const res = await fetch("http://127.0.0.1:8000/early-access", {
+      setFormStatus("loading");
+
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/early-access`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form)
       });
-      const data = await res.json();
-      if (data.message) {
-        setFormStatus("success");
-        setForm({ full_name: "", email: "", brand_name: "", order_volume: "< 500 orders" });
-      } else {
-        setFormStatus("error");
-      }
-    } catch {
+
+      if (!res.ok) throw new Error();
+
+      setFormStatus("success");
+
+
+      setForm({
+        full_name: "",
+        email: "",
+        brand_name: "",
+        phone: "",
+        order_volume: "< 500 orders"
+      });
+
+    } catch (err) {
       setFormStatus("error");
     }
   };
@@ -113,7 +119,7 @@ export default function Home() {
                 </span>
               </h1>
               <p className="text-indigo-200 text-lg leading-relaxed mb-10 max-w-lg">
-                RTO Shield AI predicts risky COD orders before shipping and helps Indian brands recover thousands of rupees every month using machine learning.
+                ZRTO AI predicts risky COD orders before shipping and helps Indian brands recover thousands of rupees every month using machine learning.
               </p>
               <div className="flex flex-wrap gap-4 mb-10">
                 <Link to="/register" className="font-bold px-8 py-4 rounded-xl text-base shadow-2xl transition-all hover:scale-105" style={{ background: "linear-gradient(135deg, #f97316, #fb923c)", color: "#fff", boxShadow: "0 8px 32px rgba(249,115,22,0.4)" }}>
@@ -341,7 +347,7 @@ export default function Home() {
                   {[1, 2, 3, 4, 5].map(s => <span key={s} className="text-2xl">⭐</span>)}
                 </div>
                 <span className="font-extrabold text-2xl" style={{ color: "#1e1b4b" }}>4.9</span>
-                <span className="text-sm" style={{ color: "#6b7280" }}>out of 5 · 500+ reviews</span>
+                <span className="text-sm" style={{ color: "#6b7280" }}>out of 5 · 50+ Positive reviews</span>
               </div>
             </div>
 
@@ -404,9 +410,9 @@ export default function Home() {
             </div>
             <div className="grid md:grid-cols-4 gap-5">
               {[
-                { icon: "🛍️", bg: "#f0fdf4", border: "#86efac", iconBg: "#dcfce7", title: "Shopify", badge: "POPULAR", badgeBg: "#dcfce7", badgeColor: "#16a34a", link: "View App Store →", linkColor: "#16a34a", desc: "Auto-sync orders, add risk tags, and manage verification from your Shopify Admin." },
-                { icon: "🏪", bg: "#faf5ff", border: "#d8b4fe", iconBg: "#ede9fe", title: "WooCommerce", link: "Download Plugin →", linkColor: "#7c3aed", desc: "Lightweight WordPress plugin. Hooks into checkout to flag risky COD orders instantly." },
-                { icon: "⚡", bg: "#fff7ed", border: "#fdba74", iconBg: "#ffedd5", title: "Custom API", link: "Read Documentation →", linkColor: "#ea580c", desc: "Use our REST API to score orders and trigger verification workflows programmatically." },
+                { icon: "🛍️", bg: "#f0fdf4", border: "#86efac", iconBg: "#dcfce7", title: "Shopify", badge: "POPULAR", badgeBg: "#dcfce7", badgeColor: "#16a34a", link: "Coming Soon... →", linkColor: "#16a34a", desc: "Auto-sync orders, add risk tags, and manage verification from your Shopify Admin." },
+                { icon: "🏪", bg: "#faf5ff", border: "#d8b4fe", iconBg: "#ede9fe", title: "WooCommerce", link: "Coming Soon... →", linkColor: "#7c3aed", desc: "Lightweight WordPress plugin. Hooks into checkout to flag risky COD orders instantly." },
+                { icon: "⚡", bg: "#fff7ed", border: "#fdba74", iconBg: "#ffedd5", title: "Custom API", link: "view More Details →", linkColor: "#ea580c", desc: "Use our REST API to score orders and trigger verification workflows programmatically." },
                 { icon: "📁", bg: "#eff6ff", border: "#93c5fd", iconBg: "#dbeafe", title: "Manual Upload", link: "View Guide →", linkColor: "#2563eb", desc: "No tech team? Export orders to CSV and upload to our dashboard for bulk scoring." },
               ].map(item => (
                 <div key={item.title} className="rounded-2xl p-6 shadow-md hover:shadow-xl transition-all hover:scale-105 relative" style={{ background: item.bg, border: `2px solid ${item.border}` }}>
@@ -463,8 +469,12 @@ export default function Home() {
               {formStatus === "success" ? (
                 <div className="flex flex-col items-center justify-center h-full text-center py-8">
                   <div className="text-6xl mb-4">🎉</div>
-                  <h3 className="text-xl font-extrabold text-white mb-2">Application Received!</h3>
-                  <p className="text-indigo-200 text-sm">We'll be in touch within 24–48 hours.</p>
+                  <h3 className="text-xl font-extrabold text-white mb-2">
+                    Application Received!
+                  </h3>
+                  <p className="text-indigo-200 text-sm">
+                    We'll be in touch within 24–48 hours.
+                  </p>
                 </div>
               ) : (
                 <>
@@ -472,24 +482,78 @@ export default function Home() {
                     { label: "Full Name", key: "full_name", type: "text", placeholder: "John Doe" },
                     { label: "Work Email", key: "email", type: "email", placeholder: "john@brand.com" },
                     { label: "Brand Name", key: "brand_name", type: "text", placeholder: "My Awesome Store" },
-                  ].map(field => (
+                    { label: "Phone", key: "phone", type: "tel", placeholder: "9876543210" }, // ✅ ADDED
+                  ].map((field) => (
                     <div key={field.key}>
-                      <label className="text-xs font-bold mb-1.5 block text-indigo-200 uppercase tracking-wide">{field.label}</label>
-                      <input type={field.type} className="w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-all" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", color: "#fff" }} placeholder={field.placeholder} value={form[field.key]} onChange={e => setForm({ ...form, [field.key]: e.target.value })} />
+                      <label className="text-xs font-bold mb-1.5 block text-indigo-200 uppercase tracking-wide">
+                        {field.label}
+                      </label>
+                      <input
+                        type={field.type}
+                        placeholder={field.placeholder}
+                        value={form[field.key]}
+                        onChange={(e) =>
+                          setForm({ ...form, [field.key]: e.target.value })
+                        }
+                        className="w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-all"
+                        style={{
+                          background: "rgba(255,255,255,0.1)",
+                          border: "1px solid rgba(255,255,255,0.2)",
+                          color: "#fff",
+                        }}
+                      />
                     </div>
                   ))}
+
+                  {/* Monthly Orders */}
                   <div>
-                    <label className="text-xs font-bold mb-1.5 block text-indigo-200 uppercase tracking-wide">Monthly Order Volume</label>
-                    <select className="w-full rounded-xl px-4 py-3 text-sm focus:outline-none" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", color: "#e0e7ff" }} value={form.order_volume} onChange={e => setForm({ ...form, order_volume: e.target.value })}>
+                    <label className="text-xs font-bold mb-1.5 block text-indigo-200 uppercase tracking-wide">
+                      Monthly Order Volume
+                    </label>
+                    <select
+                      value={form.monthly_orders} // ✅ FIXED
+                      onChange={(e) =>
+                        setForm({ ...form, monthly_orders: e.target.value }) // ✅ FIXED
+                      }
+                      className="w-full rounded-xl px-4 py-3 text-sm focus:outline-none"
+                      style={{
+                        background: "rgba(255,255,255,0.1)",
+                        border: "1px solid rgba(255,255,255,0.2)",
+                        color: "#e0e7ff",
+                      }}
+                    >
                       <option style={{ background: "#312e81" }}>&lt; 500 orders</option>
-                      <option style={{ background: "#312e81" }}>500 – 2,000 orders</option>
-                      <option style={{ background: "#312e81" }}>2,000 – 10,000 orders</option>
-                      <option style={{ background: "#312e81" }}>10,000+ orders</option>
+                      <option style={{ background: "#312e81" }}>
+                        500 – 2,000 orders
+                      </option>
+                      <option style={{ background: "#312e81" }}>
+                        2,000 – 10,000 orders
+                      </option>
+                      <option style={{ background: "#312e81" }}>
+                        10,000+ orders
+                      </option>
                     </select>
                   </div>
-                  {formStatus === "error" && <p className="text-red-300 text-xs">Something went wrong. Please try again.</p>}
-                  <button onClick={handleFormSubmit} disabled={formStatus === "loading"} className="w-full font-extrabold py-4 rounded-xl text-sm transition-all hover:scale-105 disabled:opacity-60" style={{ background: "linear-gradient(135deg, #f97316, #fb923c)", color: "#fff", boxShadow: "0 8px 24px rgba(249,115,22,0.4)" }}>
-                    {formStatus === "loading" ? "Submitting..." : "Apply for Early Access →"}
+
+                  {formStatus === "error" && (
+                    <p className="text-red-300 text-xs">
+                      Something went wrong. Please try again.
+                    </p>
+                  )}
+
+                  <button
+                    onClick={handleFormSubmit}
+                    disabled={formStatus === "loading"}
+                    className="w-full font-extrabold py-4 rounded-xl text-sm transition-all hover:scale-105 disabled:opacity-60"
+                    style={{
+                      background: "linear-gradient(135deg, #f97316, #fb923c)",
+                      color: "#fff",
+                      boxShadow: "0 8px 24px rgba(249,115,22,0.4)",
+                    }}
+                  >
+                    {formStatus === "loading"
+                      ? "Submitting..."
+                      : "Apply for Early Access →"}
                   </button>
                 </>
               )}

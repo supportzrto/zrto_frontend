@@ -17,7 +17,7 @@ import Contact from "./pages/contact.jsx";
 import Privacy from "./pages/privacy.jsx";
 import Terms from "./pages/terms.jsx";
 import ForgotPassword from "./pages/forgotpassword.jsx"
-
+import NotFound from "./pages/NotFound";
 
 import Account from "./pages/account.jsx";
 import ApiIntegration from "./pages/apiintegration.jsx";
@@ -30,7 +30,7 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-      
+
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -40,7 +40,7 @@ function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        
+
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/predict" element={<ProtectedRoute><PredictOrders /></ProtectedRoute>} />
         <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
@@ -49,10 +49,19 @@ function App() {
         <Route path="/pricing" element={<ProtectedRoute><Pricing /></ProtectedRoute>} />
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
 
-       
+
         <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
         <Route path="/api" element={<ProtectedRoute><ApiIntegration /></ProtectedRoute>} />
-        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>}/>
+        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="*" element={<NotFound />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
