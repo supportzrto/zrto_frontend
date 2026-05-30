@@ -5,9 +5,10 @@ import UsageBar from "../components/usagebar";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function Dashboard({ user }) {
+export default function Dashboard() {
   const [stats, setStats] = useState(null);
   const [usage, setUsage] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const plan = user?.plan || "free";
 
@@ -43,7 +44,26 @@ export default function Dashboard({ user }) {
       }
     }
 
+    async function loadUser() {
+      try {
+        const response = await fetch(`${API_URL}/api/me`, {
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to load profile");
+        }
+
+        const data = await response.json();
+        setUser(data);
+
+      } catch (err) {
+        console.error("User load error:", err);
+      }
+    }
+
     loadData();
+    loadUser();
   }, []);
 
   return (
@@ -55,8 +75,20 @@ export default function Dashboard({ user }) {
         style={{ background: "linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)", boxShadow: "0 8px 32px rgba(79,70,229,0.25)" }}
       >
         <div>
-          <h1 className="text-2xl font-extrabold text-white mb-1">Welcome back! 👋</h1>
-          <p className="text-indigo-200 text-sm">Here's what's happening with your COD orders today.</p>
+          <h1 className="text-2xl font-extrabold text-white mb-1">
+            Welcome back, {user?.first_name || "User"}! 👋
+          </h1>
+
+          {user?.company_name && (
+            <p className="text-indigo-200 text-sm mb-1">
+              {user.company_name}
+            </p>
+          )}
+
+          <p className="text-indigo-200 text-sm">
+            Here's what's happening with your COD orders today.
+          </p>
+    
         </div>
         <div className="hidden md:flex items-center gap-3">
           <div className="text-right">

@@ -14,6 +14,10 @@ export default function Account() {
   const token = localStorage.getItem("token");
   const [deleteStatus, setDeleteStatus] = useState(null);
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const API_URL = import.meta.env.VITE_API_URL;
+
+
 
   let userId = "—";
   try {
@@ -22,14 +26,21 @@ export default function Account() {
   } catch { }
 
   useEffect(() => {
-    fetch("http://localhost/usage", { credentials:"include" })
+    fetch(`${API_URL}/usage`, { credentials: "include" })
       .then(res => res.json())
       .then(data => {
         setUsage(data);
         if (data.plan) { setPlan(data.plan); localStorage.setItem("plan", data.plan); }
       }).catch(() => { });
 
-    fetch("http://localhost:8000/api/key", { credentials:"include"})
+    fetch(`${API_URL}/api/me`, {
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(data => setUser(data))
+      .catch(() => { });
+
+    fetch(`${API_URL}/api/key`, { credentials: "include" })
       .then(res => res.json())
       .then(data => {
         if (data.api_key) { setApiKey(data.api_key); localStorage.setItem("api_key", data.api_key); }
@@ -58,9 +69,9 @@ export default function Account() {
     setPwLoading(true);
     setPwStatus(null);
     try {
-      const res = await fetch("http://localhost:8000/change-password", {
+      const res = await fetch(`${API_URL}/change-password`, {
         method: "POST",
-        credentials:"include",
+        credentials: "include",
         headers: { "Content-Type": "application/json", token },
         body: JSON.stringify({
           current_password: pwForm.current,
@@ -100,7 +111,7 @@ export default function Account() {
     // second click — actually delete
     setDeleteStatus("deleting");
     try {
-      const res = await fetch("http://localhost:8000/delete-account", {
+      const res = await fetch(`${API_URL}/delete-account`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -143,22 +154,57 @@ export default function Account() {
         <div className="space-y-5">
 
           {/* Avatar + plan */}
-          <div className="rounded-2xl p-6 shadow-md text-center"
-            style={{ background: "#fff", border: "2px solid #e0e7ff" }}>
-            <div className="w-20 h-20 rounded-full flex items-center justify-center text-3xl font-extrabold text-white mx-auto mb-4"
-              style={{ background: "linear-gradient(135deg, #4f46e5, #7c3aed)" }}>
-              👤
+          {/* Avatar + plan */}
+          <div
+            className="rounded-2xl p-6 shadow-md text-center"
+            style={{
+              background: "#fff",
+              border: "2px solid #e0e7ff"
+            }}
+          >
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center text-3xl font-extrabold text-white mx-auto mb-4"
+              style={{
+                background: "linear-gradient(135deg, #4f46e5, #7c3aed)"
+              }}
+            >
+              {user?.first_name?.charAt(0)?.toUpperCase() || "U"}
             </div>
-            <h3 className="font-extrabold text-lg mb-1" style={{ color: "#1e1b4b" }}>My Account</h3>
-            <p className="text-sm mb-4" style={{ color: "#6b7280" }}>User ID: {userId}</p>
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-extrabold uppercase"
+
+            <h3
+              className="font-extrabold text-xl mb-1"
+              style={{ color: "#1e1b4b" }}
+            >
+              {user?.first_name || "User"}
+            </h3>
+
+            <p
+              className="text-sm mb-1"
+              style={{ color: "#6b7280" }}
+            >
+              {user?.email}
+            </p>
+
+            {user?.company_name && (
+              <p
+                className="text-sm mb-4"
+                style={{ color: "#6b7280" }}
+              >
+                🏢 {user.company_name}
+              </p>
+            )}
+
+            <span
+              className="inline-block px-4 py-2 rounded-full text-xs font-extrabold uppercase"
               style={{
                 background: plan === "pro" ? "#fff7ed" : "#e0e7ff",
                 color: plan === "pro" ? "#ea580c" : "#4338ca"
-              }}>
+              }}
+            >
               {plan === "pro" ? "⭐ Pro Plan" : "✨ Free Plan"}
             </span>
           </div>
+
 
           {/* Usage summary */}
           <div className="rounded-2xl p-5 shadow-md"
@@ -190,10 +236,31 @@ export default function Account() {
             <h3 className="font-extrabold mb-4 text-sm" style={{ color: "#1e1b4b" }}>📋 Account Info</h3>
             <div className="space-y-3 text-sm">
               {[
-                { label: "Plan", value: plan.charAt(0).toUpperCase() + plan.slice(1), icon: "💎" },
-                { label: "Status", value: "Active ✅", icon: "🛡️" },
-                { label: "Email Verified", value: "Yes ✅", icon: "📧" },
-                { label: "API Access", value: "Disabled ⚡", icon: "🔑" },
+                {
+                  label: "Plan",
+                  value: plan.charAt(0).toUpperCase() + plan.slice(1),
+                  icon: "💎"
+                },
+                {
+                  label: "Company",
+                  value: user?.company_name || "-",
+                  icon: "🏢"
+                },
+                {
+                  label: "Phone",
+                  value: user?.phone || "-",
+                  icon: "📱"
+                },
+                {
+                  label: "Email Verified",
+                  value: "Yes ✅",
+                  icon: "📧"
+                },
+                {
+                  label: "API Access",
+                  value: plan === "pro" ? "Enabled ✅" : "Upgrade Required 🔒",
+                  icon: "⚡"
+                }
               ].map(item => (
                 <div key={item.label} className="flex items-center justify-between py-1"
                   style={{ borderBottom: "1px solid #f1f5f9" }}>
@@ -216,21 +283,34 @@ export default function Account() {
             <div className="rounded-xl p-4 flex items-center gap-3 mb-3"
               style={{ background: "#f5f3ff", border: "2px solid #c4b5fd" }}>
               <span className="flex-1 font-mono text-sm truncate" style={{ color: "#4f46e5" }}>
-                {showKey ? (apiKey || "Not available") : (apiKey ? "•".repeat(36) : "Not available")}
+                {apiKey
+                  ? showKey
+                    ? apiKey
+                    : "•".repeat(36)
+                  : "Upgrade to Pro to get API Access"}
               </span>
-              <button onClick={() => setShowKey(!showKey)}
-                className="text-xs font-bold px-2.5 py-1.5 rounded-lg flex-shrink-0"
-                style={{ background: "#e0e7ff", color: "#4338ca" }}>
-                {showKey ? "🙈 Hide" : "👁️ Show"}
-              </button>
-              <button onClick={copyKey}
-                className="text-xs font-bold px-2.5 py-1.5 rounded-lg flex-shrink-0 transition-all"
-                style={{
-                  background: keyCopied ? "#dcfce7" : "#e0e7ff",
-                  color: keyCopied ? "#16a34a" : "#4338ca"
-                }}>
-                {keyCopied ? "✓ Copied!" : "📋 Copy"}
-              </button>
+              {apiKey && (
+                <>
+                  <button
+                    onClick={() => setShowKey(!showKey)}
+                    className="text-xs font-bold px-2.5 py-1.5 rounded-lg flex-shrink-0"
+                    style={{ background: "#e0e7ff", color: "#4338ca" }}
+                  >
+                    {showKey ? "🙈 Hide" : "👁️ Show"}
+                  </button>
+
+                  <button
+                    onClick={copyKey}
+                    className="text-xs font-bold px-2.5 py-1.5 rounded-lg flex-shrink-0 transition-all"
+                    style={{
+                      background: keyCopied ? "#dcfce7" : "#e0e7ff",
+                      color: keyCopied ? "#16a34a" : "#4338ca"
+                    }}
+                  >
+                    {keyCopied ? "✓ Copied!" : "📋 Copy"}
+                  </button>
+                </>
+              )}
             </div>
             <p className="text-xs" style={{ color: "#9ca3af" }}>
               🔒 Keep this key secret. Never share it publicly or commit to version control.

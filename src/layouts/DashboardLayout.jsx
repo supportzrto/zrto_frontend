@@ -8,16 +8,18 @@ export default function DashboardLayout({ children }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
+
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/me`, {
-          headers: {
-            "Authorization": `Bearer ${token}`
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/me`,
+          {
+            credentials: "include"
           }
-        });
+        );
 
         const data = await res.json();
+        console.log("API ME:", data);
         setUser(data);
       } catch (err) {
         console.error("User fetch error:", err);
@@ -34,7 +36,7 @@ export default function DashboardLayout({ children }) {
 
       <div className="flex-1">
 
-        <Navbar />
+        <Navbar user={user} />
 
         <div className="p-6">
           {children}

@@ -4,7 +4,9 @@ import { useNavigate, Link } from "react-router-dom";
 export default function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -29,7 +31,9 @@ export default function Register() {
         body: JSON.stringify({
           first_name: firstName,
           last_name: lastName,
+          company_name: companyName,
           email,
+          phone: phone,
           password,
         }),
       });
@@ -173,6 +177,20 @@ export default function Register() {
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-semibold text-gray-600 mb-2">
+                COMPANY NAME
+              </label>
+
+              <input
+                type="text"
+                placeholder="ABC Ecommerce Pvt Ltd"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                className="w-full border border-gray-200 rounded-xl p-4 outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+
             {/* Email */}
             <div className="mb-4">
               <label className="text-xs font-bold uppercase tracking-wide mb-1.5 block"
@@ -188,6 +206,20 @@ export default function Register() {
                 style={{ background: "#f5f3ff", border: "2px solid #e0e7ff", color: "#1e1b4b" }}
                 onFocus={e => e.target.style.borderColor = "#4f46e5"}
                 onBlur={e => e.target.style.borderColor = "#e0e7ff"}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-600 mb-2">
+                PHONE NUMBER
+              </label>
+
+              <input
+                type="tel"
+                placeholder="+91 9876543210"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full border border-gray-200 rounded-xl p-4 outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
 

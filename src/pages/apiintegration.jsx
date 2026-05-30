@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const platforms = [
-  { key: "shopify",      label: "Shopify",       icon: "🛍️", color: "#16a34a", bg: "#f0fdf4", border: "#86efac" },
-  { key: "woocommerce",  label: "WooCommerce",    icon: "🏪", color: "#7c3aed", bg: "#faf5ff", border: "#d8b4fe" },
-  { key: "custom",       label: "Custom API",     icon: "⚡", color: "#ea580c", bg: "#fff7ed", border: "#fdba74" },
-  { key: "csv",          label: "CSV Upload",     icon: "📁", color: "#0891b2", bg: "#ecfeff", border: "#67e8f9" },
+  { key: "shopify", label: "Shopify", icon: "🛍️", color: "#16a34a", bg: "#f0fdf4", border: "#86efac" },
+  { key: "woocommerce", label: "WooCommerce", icon: "🏪", color: "#7c3aed", bg: "#faf5ff", border: "#d8b4fe" },
+  { key: "custom", label: "Custom API", icon: "⚡", color: "#ea580c", bg: "#fff7ed", border: "#fdba74" },
+  { key: "csv", label: "CSV Upload", icon: "📁", color: "#0891b2", bg: "#ecfeff", border: "#67e8f9" },
 ];
 
 export default function ApiIntegration() {
@@ -18,7 +18,7 @@ export default function ApiIntegration() {
     fetch("http://127.0.0.1:8000/api/key", { headers: { token } })
       .then(res => res.json())
       .then(data => { if (data.api_key) setApiKey(data.api_key); })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const key = apiKey || "YOUR_API_KEY";
@@ -556,6 +556,232 @@ print("Now upload this file on the Predict Orders page.")`,
             </div>
           ))}
         </div>
+
+        {/* API Request Fields */}
+        <div
+          className="rounded-2xl p-6 shadow-md mt-6"
+          style={{ background: "#fff", border: "2px solid #e0e7ff" }}
+        >
+          <h2
+            className="font-extrabold text-lg mb-5"
+            style={{ color: "#1e1b4b" }}
+          >
+            📥 Required Request Fields
+          </h2>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr
+                  style={{
+                    background: "#f5f3ff",
+                    color: "#4f46e5"
+                  }}
+                >
+                  <th className="p-3 text-left">Field</th>
+                  <th className="p-3 text-left">Type</th>
+                  <th className="p-3 text-left">Description</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {[
+                  ["order_id", "number", "Unique order number"],
+                  ["order_value", "number", "Order amount in INR"],
+                  ["payment_type", "string", "COD or Prepaid"],
+                  ["pincode", "number", "Delivery pincode"],
+                  ["customer_city", "string", "Customer city"],
+                  ["device_type", "string", "Mobile / Desktop / App"],
+                  ["order_channel", "string", "Website / App / WhatsApp"]
+                ].map((row, i) => (
+                  <tr
+                    key={i}
+                    style={{
+                      borderBottom: "1px solid #e5e7eb"
+                    }}
+                  >
+                    <td className="p-3 font-mono">{row[0]}</td>
+                    <td className="p-3">{row[1]}</td>
+                    <td className="p-3">{row[2]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* How Integration Works */}
+        <div
+          className="rounded-2xl p-6 shadow-md mt-6"
+          style={{ background: "#fff", border: "2px solid #e0e7ff" }}
+        >
+          <h2
+            className="font-extrabold text-lg mb-6"
+            style={{ color: "#1e1b4b" }}
+          >
+            🚀 How Integration Works
+          </h2>
+
+          <div className="grid md:grid-cols-5 gap-4 text-center">
+
+            {[
+              "Customer Places COD Order",
+              "Store Sends API Request",
+              "ZRTO AI Scores Order",
+              "Decision Generated",
+              "Store Takes Action"
+            ].map((step, i) => (
+              <div
+                key={i}
+                className="rounded-xl p-4"
+                style={{
+                  background: "#f5f3ff",
+                  border: "2px solid #c4b5fd"
+                }}
+              >
+                <div
+                  className="w-8 h-8 rounded-full mx-auto mb-3 flex items-center justify-center text-white font-bold"
+                  style={{ background: "#4f46e5" }}
+                >
+                  {i + 1}
+                </div>
+
+                <p
+                  className="text-xs font-semibold"
+                  style={{ color: "#4b5563" }}
+                >
+                  {step}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* API Performance */}
+        <div
+          className="rounded-2xl p-6 shadow-md mt-6"
+          style={{ background: "#fff7ed", border: "2px solid #fed7aa" }}
+        >
+          <h2
+            className="font-extrabold text-lg mb-5"
+            style={{ color: "#c2410c" }}
+          >
+            ⚡ API Performance
+          </h2>
+
+          <div className="grid md:grid-cols-4 gap-4">
+
+            {[
+              {
+                label: "Avg Response",
+                value: "< 500ms"
+              },
+              {
+                label: "Availability",
+                value: "99.9%"
+              },
+              {
+                label: "Rate Limit",
+                value: "60/min"
+              },
+              {
+                label: "Recommended Timeout",
+                value: "5 sec"
+              }
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-xl p-4 text-center"
+                style={{
+                  background: "#fff",
+                  border: "2px solid #fed7aa"
+                }}
+              >
+                <div
+                  className="font-extrabold text-xl"
+                  style={{ color: "#ea580c" }}
+                >
+                  {item.value}
+                </div>
+
+                <div
+                  className="text-xs mt-1"
+                  style={{ color: "#6b7280" }}
+                >
+                  {item.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Common Use Cases */}
+        <div
+          className="rounded-2xl p-6 shadow-md mt-6 mb-6"
+          style={{ background: "#fff", border: "2px solid #e0e7ff" }}
+        >
+          <h2
+            className="font-extrabold text-lg mb-5"
+            style={{ color: "#1e1b4b" }}
+          >
+            💼 Common Use Cases
+          </h2>
+
+          <div className="grid md:grid-cols-4 gap-4">
+
+            {[
+              {
+                icon: "🛍️",
+                title: "Shopify Stores",
+                desc: "Reduce COD RTO losses automatically"
+              },
+              {
+                icon: "🏪",
+                title: "WooCommerce",
+                desc: "Auto-hold risky COD orders"
+              },
+              {
+                icon: "🚀",
+                title: "D2C Brands",
+                desc: "Increase prepaid conversions"
+              },
+              {
+                icon: "📞",
+                title: "Call Centers",
+                desc: "Verify risky customers before shipping"
+              }
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-xl p-5"
+                style={{
+                  background: "#f8fafc",
+                  border: "2px solid #e2e8f0"
+                }}
+              >
+                <div className="text-3xl mb-3">
+                  {item.icon}
+                </div>
+
+                <h3
+                  className="font-extrabold mb-2"
+                  style={{ color: "#4f46e5" }}
+                >
+                  {item.title}
+                </h3>
+
+                <p
+                  className="text-xs leading-relaxed"
+                  style={{ color: "#6b7280" }}
+                >
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+
       </div>
     </DashboardLayout>
   );

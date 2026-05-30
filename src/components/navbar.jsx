@@ -13,6 +13,7 @@ const pageTitles = {
 };
 
 export default function Navbar({ user }) {
+  console.log("Navbar User:", user);
   const navigate = useNavigate();
   const location = useLocation();
   const page = pageTitles[location.pathname] || { title: "Dashboard", icon: "📊" };
@@ -38,15 +39,20 @@ export default function Navbar({ user }) {
       {/* Right side */}
       <div className="flex items-center gap-4">
         {/* Plan badge */}
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold"
-          style={{ background: "#e0e7ff", color: "#4338ca" }}>
-          ✨ Free Plan
+        <div
+          className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border"
+          style={{
+            background: "#eef2ff",
+            color: "#4338ca",
+            borderColor: "#c7d2fe"
+          }}
+        >
+          🚀 {user?.plan ? `${user.plan.charAt(0).toUpperCase()}${user.plan.slice(1)}` : "Free"} Plan
         </div>
 
         {/* User avatar */}
-        <div className="w-9 h-9 rounded-full flex items-center justify-center font-extrabold text-sm text-white"
-          style={{ background: "linear-gradient(135deg, #4f46e5, #7c3aed)" }}>
-          U
+        <div className="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold">
+          {user?.first_name?.charAt(0).toUpperCase() || "U"}
         </div>
 
         <div>

@@ -159,6 +159,136 @@ export default function ApiKeyPage() {
             ))}
           </div>
 
+          {/* How It Works */}
+          <div
+            className="rounded-2xl p-8 shadow-md mb-8"
+            style={{ background: "#fff", border: "2px solid #e0e7ff" }}
+          >
+            <h2
+              className="text-xl font-extrabold mb-6 text-center"
+              style={{ color: "#1e1b4b" }}
+            >
+              ⚙️ How API Access Works
+            </h2>
+
+            <div className="grid md:grid-cols-6 gap-4 text-center">
+              {[
+                "Purchase API",
+                "Get API Key",
+                "Integrate Store",
+                "Send Orders",
+                "Get Risk Score",
+                "Take Action"
+              ].map((step, index) => (
+                <div key={step}>
+                  <div
+                    className="w-12 h-12 mx-auto rounded-full flex items-center justify-center font-bold text-white mb-3"
+                    style={{
+                      background: "linear-gradient(135deg,#4f46e5,#7c3aed)"
+                    }}
+                  >
+                    {index + 1}
+                  </div>
+
+                  <p className="text-xs font-semibold">{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+
+          {/* Supported Platforms */}
+          <div
+            className="rounded-2xl p-8 shadow-md mb-8"
+            style={{ background: "#fff", border: "2px solid #e0e7ff" }}
+          >
+            <h2
+              className="text-xl font-extrabold mb-6 text-center"
+              style={{ color: "#1e1b4b" }}
+            >
+              🛍 Supported Platforms
+            </h2>
+
+            <div className="grid md:grid-cols-5 gap-4 text-center">
+              {[
+                "Shopify",
+                "WooCommerce",
+                "React Store",
+                "Custom Website",
+                "Mobile App"
+              ].map(platform => (
+                <div
+                  key={platform}
+                  className="rounded-xl p-4"
+                  style={{
+                    background: "#f8f7ff",
+                    border: "1px solid #e0e7ff"
+                  }}
+                >
+                  <div className="text-2xl mb-2">✅</div>
+                  <div className="font-bold text-sm">{platform}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+
+          {/* Example Prediction */}
+          <div
+            className="rounded-2xl p-8 shadow-md mb-8"
+            style={{
+              background: "#fff",
+              border: "2px solid #e0e7ff"
+            }}
+          >
+            <h2
+              className="text-xl font-extrabold mb-6"
+              style={{ color: "#1e1b4b" }}
+            >
+              📦 Example Order Prediction
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+
+              <div
+                className="rounded-xl p-5"
+                style={{ background: "#f8f7ff" }}
+              >
+                <h3 className="font-bold mb-3">Customer Order</h3>
+
+                <div className="space-y-2 text-sm">
+                  <div>Order Value: ₹2,499</div>
+                  <div>Payment: COD</div>
+                  <div>City: Hyderabad</div>
+                  <div>Customer: New User</div>
+                </div>
+              </div>
+
+              <div
+                className="rounded-xl p-5"
+                style={{
+                  background: "#fff7ed",
+                  border: "2px solid #fed7aa"
+                }}
+              >
+                <h3
+                  className="font-bold mb-3"
+                  style={{ color: "#ea580c" }}
+                >
+                  AI Result
+                </h3>
+
+                <div className="space-y-2 text-sm">
+                  <div>Risk Score: 91%</div>
+                  <div>Decision: VERIFY</div>
+                  <div>Reason: High RTO Area</div>
+                  <div>Action: Verify Customer Before Shipping</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
           {/* Blurred code preview */}
           <div className="rounded-2xl overflow-hidden shadow-md relative" style={{ border: "2px solid #1e1b4b" }}>
             <div className="flex items-center px-5 py-3" style={{ background: "#1e1b4b" }}>
@@ -173,7 +303,7 @@ export default function ApiKeyPage() {
             </div>
             <div style={{ filter: "blur(4px)", pointerEvents: "none" }}>
               <pre className="p-6 text-sm leading-relaxed" style={{ background: "#0f172a", color: "#a5f3fc" }}>
-{`fetch("http://localhost:8000/api/predict-order", {
+                {`fetch("http://localhost:8000/api/predict-order", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -320,7 +450,7 @@ export default function ApiKeyPage() {
                 📥 Example Response
               </div>
               <pre className="p-5 text-sm leading-relaxed" style={{ background: "#f8f7ff", color: "#4f46e5" }}>
-{`{
+                {`{
   "risk_score": 0.87,
   "decision": "BLOCK_COD",
   "action": "Convert to prepaid or cancel"
@@ -355,9 +485,9 @@ export default function ApiKeyPage() {
               {[
                 { method: "POST", path: "/api/predict-order", desc: "Score a single COD order for RTO risk", color: "#16a34a", bg: "#dcfce7" },
                 { method: "POST", path: "/predict", desc: "Bulk predict orders via CSV file upload", color: "#4f46e5", bg: "#e0e7ff" },
-                { method: "GET",  path: "/usage", desc: "Get your current plan usage and limits", color: "#0891b2", bg: "#cffafe" },
-                { method: "GET",  path: "/api/stats", desc: "Get detailed prediction statistics", color: "#7c3aed", bg: "#ede9fe" },
-                { method: "GET",  path: "/api/logs", desc: "Retrieve all API prediction logs", color: "#db2777", bg: "#fce7f3" },
+                { method: "GET", path: "/usage", desc: "Get your current plan usage and limits", color: "#0891b2", bg: "#cffafe" },
+                { method: "GET", path: "/api/stats", desc: "Get detailed prediction statistics", color: "#7c3aed", bg: "#ede9fe" },
+                { method: "GET", path: "/api/logs", desc: "Retrieve all API prediction logs", color: "#db2777", bg: "#fce7f3" },
                 { method: "POST", path: "/api/regenerate-key", desc: "Generate a new API key", color: "#ea580c", bg: "#ffedd5" },
               ].map(ep => (
                 <div key={ep.path}
@@ -370,6 +500,71 @@ export default function ApiKeyPage() {
                   <span className="text-sm" style={{ color: "#6b7280" }}>{ep.desc}</span>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* FAQ */}
+          <div
+            className="rounded-2xl p-8 shadow-md mt-8"
+            style={{
+              background: "#fff",
+              border: "2px solid #e0e7ff"
+            }}
+          >
+            <h2
+              className="text-xl font-extrabold mb-6"
+              style={{ color: "#1e1b4b" }}
+            >
+              ❓ Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-5">
+
+              <div>
+                <h3 className="font-bold">
+                  What happens after payment?
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Your API key is generated instantly.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-bold">
+                  Can I regenerate my API key?
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Yes, anytime from the API Access page.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-bold">
+                  Can I disable my API key?
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Yes. Disabled keys stop accepting requests immediately.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-bold">
+                  Is API access included in Free Plan?
+                </h3>
+                <p className="text-sm text-gray-500">
+                  No. API access requires a separate subscription.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-bold">
+                  Can I cancel anytime?
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Yes. There is no long-term contract.
+                </p>
+              </div>
+
             </div>
           </div>
         </div>
