@@ -25,7 +25,7 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/register", {
+      const res = await fetch("https://zrtobackend-production.up.railway.app/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -127,7 +127,7 @@ export default function Register() {
           <div className="flex items-center gap-2 justify-center mb-8 md:hidden">
             <span className="text-3xl">🛡️</span>
             <span className="font-extrabold text-xl" style={{ color: "#1e1b4b" }}>
-              RTO Shield <span style={{ color: "#f97316" }}>AI</span>
+              ZRTO <span style={{ color: "#f97316" }}>AI</span>
             </span>
           </div>
 

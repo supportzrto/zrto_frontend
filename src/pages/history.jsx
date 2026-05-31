@@ -10,7 +10,7 @@ export default function History() {
 
   const downloadFile = async (filePath) => {
   try {
-    const res = await fetch(`http://localhost:8000/download/${encodeURIComponent(filePath)}`, {
+    const res = await fetch(`https://zrtobackend-production.up.railway.app/download/${encodeURIComponent(filePath)}`, {
       credentials: "include"
     });
 
@@ -33,7 +33,7 @@ export default function History() {
 };
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/prediction-history", {
+    fetch("https://zrtobackend-production.up.railway.app/api/prediction-history", {
       credentials: "include"
     })
       .then(res => res.json())

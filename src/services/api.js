@@ -1,6 +1,6 @@
 export async function getUsage() {
 
-  const res = await fetch("http://127.0.0.1:8000/api/usage", {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/usage`, {
     headers: {
       token: localStorage.getItem("token")
     }
@@ -10,9 +10,9 @@ export async function getUsage() {
 }
 
 export const getProtectedData = async () => {
-  const res = await fetch("http://127.0.0.1:8000/protected", {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/protected`, {
     method: "GET",
-    credentials: "include", // 🔥 important
+    credentials: "include", 
   });
 
   return res.json();

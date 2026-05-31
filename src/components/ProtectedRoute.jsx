@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { API_URL } from "../config/api";
 
 export default function ProtectedRoute({ children }) {
   const [isAuth, setIsAuth] = useState(null);
@@ -7,8 +8,8 @@ export default function ProtectedRoute({ children }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:8000/protected", {
-          credentials: "include", // 🔥 must
+        const res = await fetch(`${API_URL}/protected`, {
+          credentials: "include",
         });
 
         if (res.status === 200) {

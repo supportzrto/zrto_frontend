@@ -16,7 +16,7 @@ export default function ForgotPassword() {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/send-otp", {
+      const res = await fetch("https://zrtobackend-production.up.railway.app/send-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -41,7 +41,7 @@ export default function ForgotPassword() {
 
 
   const verifyOTP = async () => {
-    const res = await fetch("http://localhost:8000/verify-otp", {
+    const res = await fetch("https://zrtobackend-production.up.railway.app/verify-otp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -92,7 +92,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/reset-password", {
+      const res = await fetch("https://zrtobackend-production.up.railway.app/reset-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

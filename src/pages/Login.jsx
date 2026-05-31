@@ -17,7 +17,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/login", {
+      const res = await fetch("https://zrtobackend-production.up.railway.app/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -72,7 +72,7 @@ export default function Login() {
         <div className="flex items-center gap-3 mb-10">
           <span className="text-4xl">🛡️</span>
           <span className="font-extrabold text-2xl text-white">
-            RTO Shield <span style={{ color: "#fb923c" }}>AI</span>
+            ZRTO <span style={{ color: "#fb923c" }}>AI</span>
           </span>
         </div>
 

@@ -7,7 +7,7 @@ export default function UsagePage() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:8000/usage", { credentials:"include" })
+    fetch("https://zrtobackend-production.up.railway.app/usage", { credentials:"include" })
       .then(res => res.json())
       .then(d => setData(d))
       .catch(() => {});
