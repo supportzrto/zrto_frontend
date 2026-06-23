@@ -18,6 +18,10 @@ export default function Sidebar() {
   const navItems = [
     { to: "/dashboard", icon: "📊", label: "Dashboard" },
     { to: "/predict", icon: "🤖", label: "Predict Orders" },
+    { to: "/whatsapp", icon: "🟢", label: "WhatsApp Verify" },
+    { to: "/whatsapp/orders", icon: "📦", label: "Verification Orders" },
+    { to: "/whatsapp/analytics", icon: "📈", label: "WA Analytics" },
+    { to: "/whatsapp/brands", icon: "🏷️", label: "Brands" },
     { to: "/pricing", icon: "💎", label: "Pricing" },
     { to: "/history", icon: "📋", label: "Prediction History" },
     { to: "/api-access", icon: "🔑", label: "API Access" },
