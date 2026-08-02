@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import DashboardLayout from "../../layouts/DashboardLayout";
-import { getOrder, orderAction } from "../../api/whatsapp";
+import { getOrder, orderAction, sendReminder } from "../../api/whatsapp";
 import { RiskBadge, StatusBadge, Card } from "../../components/whatsapp/ui";
 
 export default function OrderDetails() {
@@ -45,6 +45,7 @@ export default function OrderDetails() {
       <Card title="Actions" className="mt-4">
         <div className="flex gap-2">
           <button onClick={() => orderAction(id, "resend").then(load)} className="px-4 py-2 bg-indigo-600 text-white text-sm rounded">Resend WhatsApp</button>
+          <button onClick={() => sendReminder(o.id).then(load)} className="px-4 py-2 bg-amber-600 text-white text-sm rounded">Send Reminder</button>
           <button onClick={() => orderAction(id, "mark_verified").then(load)} className="px-4 py-2 bg-green-600 text-white text-sm rounded">Verify</button>
           <button onClick={() => orderAction(id, "mark_rejected").then(load)} className="px-4 py-2 bg-red-600 text-white text-sm rounded">Reject</button>
         </div>

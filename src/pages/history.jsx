@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "../config/api";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 export default function History() {
@@ -10,7 +11,7 @@ export default function History() {
 
   const downloadFile = async (filePath) => {
   try {
-    const res = await fetch(`https://zrtobackend-production.up.railway.app/download/${encodeURIComponent(filePath)}`, {
+    const res = await fetch(`${API_URL}/download/${encodeURIComponent(filePath)}`, {
       credentials: "include"
     });
 
@@ -33,7 +34,7 @@ export default function History() {
 };
 
   useEffect(() => {
-    fetch("https://zrtobackend-production.up.railway.app/api/prediction-history", {
+    fetch(`${API_URL}/api/prediction-history`, {
       credentials: "include"
     })
       .then(res => res.json())

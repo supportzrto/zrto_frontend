@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../config/api";
 
 export default function ForgotPassword() {
   const [step, setStep] = useState(1);
@@ -16,7 +17,7 @@ export default function ForgotPassword() {
 
     setLoading(true);
     try {
-      const res = await fetch("https://zrtobackend-production.up.railway.app/send-otp", {
+      const res = await fetch(`${API_URL}/send-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -41,7 +42,7 @@ export default function ForgotPassword() {
 
 
   const verifyOTP = async () => {
-    const res = await fetch("https://zrtobackend-production.up.railway.app/verify-otp", {
+    const res = await fetch(`${API_URL}/verify-otp`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -92,7 +93,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://zrtobackend-production.up.railway.app/reset-password", {
+      const res = await fetch(`${API_URL}/reset-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "../config/api";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { Link } from "react-router-dom";
 
@@ -13,7 +14,7 @@ export default function ApiKeyPage() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("https://zrtobackend-production.up.railway.app/api/key", { headers: { token } })
+    fetch(`${API_URL}/api/key`, { headers: { token } })
       .then(res => res.json())
       .then(data => {
         setApiPurchased(data.api_purchased ?? false);
@@ -34,7 +35,7 @@ export default function ApiKeyPage() {
   const regenerate = async () => {
     if (!confirm("Regenerate API key? Your old key will stop working immediately.")) return;
     setLoading(true);
-    const res = await fetch("https://zrtobackend-production.up.railway.app/api/regenerate-key", {
+    const res = await fetch(`${API_URL}/api/regenerate-key`, {
       method: "POST", headers: { token },
     });
     const data = await res.json();
@@ -45,11 +46,11 @@ export default function ApiKeyPage() {
 
   const toggleKey = async () => {
     const endpoint = enabled ? "/api/key/disable" : "/api/key/enable";
-    await fetch(`https://zrtobackend-production.up.railway.app${endpoint}`, { method: "POST", headers: { token } });
+    await fetch(`${API_URL}${endpoint}`, { method: "POST", headers: { token } });
     setEnabled(!enabled);
   };
 
-  const codeExample = `fetch("https://zrtobackend-production.up.railway.app/api/predict-order", {
+  const codeExample = `fetch("${API_URL}/api/predict-order", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -303,7 +304,7 @@ export default function ApiKeyPage() {
             </div>
             <div style={{ filter: "blur(4px)", pointerEvents: "none" }}>
               <pre className="p-6 text-sm leading-relaxed" style={{ background: "#0f172a", color: "#a5f3fc" }}>
-                {`fetch("https://zrtobackend-production.up.railway.app/api/predict-order", {
+                {`fetch("${API_URL}/api/predict-order", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -400,7 +401,7 @@ export default function ApiKeyPage() {
               <h2 className="font-extrabold text-lg mb-5" style={{ color: "#c2410c" }}>⚡ Quick Reference</h2>
               <div className="space-y-3">
                 {[
-                  { label: "Base URL", value: "https://zrtobackend-production.up.railway.app", color: "#4f46e5" },
+                  { label: "Base URL", value: API_URL, color: "#4f46e5" },
                   { label: "Predict Endpoint", value: "/api/predict-order", color: "#7c3aed" },
                   { label: "Method", value: "POST", color: "#16a34a" },
                   { label: "Auth Method", value: "api_key in body", color: "#ea580c" },

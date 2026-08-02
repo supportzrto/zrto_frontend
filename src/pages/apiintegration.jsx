@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "../config/api";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const platforms = [
@@ -15,7 +16,7 @@ export default function ApiIntegration() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("https://zrtobackend-production.up.railway.app/api/key", { headers: { token } })
+    fetch(`${API_URL}/api/key`, { headers: { token } })
       .then(res => res.json())
       .then(data => { if (data.api_key) setApiKey(data.api_key); })
       .catch(() => { });
@@ -55,7 +56,7 @@ app.post('/webhook/shopify/order', async (req, res) => {
 
   try {
     const rtoRes = await fetch(
-      'https://zrtobackend-production.up.railway.app/api/predict-order',
+      '${API_URL}/api/predict-order',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -102,7 +103,7 @@ def handle_shopify_order():
 
     try:
         rto_res = requests.post(
-            'https://zrtobackend-production.up.railway.app/api/predict-order',
+            '${API_URL}/api/predict-order',
             json={
                 'api_key': '${key}',
                 'order_id': order['id'],
@@ -151,7 +152,7 @@ async function checkWooCommerceOrder(order) {
   if (order.payment_method !== 'cod') return;
 
   const res = await fetch(
-    'https://zrtobackend-production.up.railway.app/api/predict-order',
+    '${API_URL}/api/predict-order',
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -194,7 +195,7 @@ function rto_shield_check_order($order_id, $posted_data, $order) {
   if ($order->get_payment_method() !== 'cod') return;
 
   $response = wp_remote_post(
-    'https://zrtobackend-production.up.railway.app/api/predict-order',
+    '${API_URL}/api/predict-order',
     array(
       'timeout' => 5,
       'headers' => array('Content-Type' => 'application/json'),
@@ -264,7 +265,7 @@ app.post('/orders/new', async (req, res) => {
 
   try {
     const rtoRes = await fetch(
-      'https://zrtobackend-production.up.railway.app/api/predict-order',
+      '${API_URL}/api/predict-order',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -322,7 +323,7 @@ async def create_order(order: OrderRequest):
     try:
         async with httpx.AsyncClient(timeout=5) as client:
             rto_res = await client.post(
-                "https://zrtobackend-production.up.railway.app/api/predict-order",
+                "${API_URL}/api/predict-order",
                 json={
                     "api_key": "${key}",
                     "order_id": order.order_id,

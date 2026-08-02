@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "../config/api";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { Link } from "react-router-dom";
 
@@ -7,7 +8,7 @@ export default function UsagePage() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("https://zrtobackend-production.up.railway.app/usage", { credentials:"include" })
+    fetch(`${API_URL}/usage`, { credentials:"include" })
       .then(res => res.json())
       .then(d => setData(d))
       .catch(() => {});

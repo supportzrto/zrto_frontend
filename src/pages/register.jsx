@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../config/api";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Register() {
@@ -25,7 +26,7 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const res = await fetch("https://zrtobackend-production.up.railway.app/register", {
+      const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

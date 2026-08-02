@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../config/api";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { Link } from "react-router-dom";
 
@@ -302,7 +303,7 @@ export default function PredictOrders() {
           </div>
 
           <a
-            href={`https://zrtobackend-production.up.railway.app${result.download_url}`}
+            href={`${API_URL}${result.download_url}`}
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-extrabold text-white transition-all hover:scale-105"
             style={{
               background: "linear-gradient(135deg, #16a34a, #15803d)",
