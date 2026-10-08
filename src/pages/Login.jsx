@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { API_URL } from "../config/api";
 import { useNavigate, Link } from "react-router-dom";
+import { useToast } from "../components/Toast.jsx";
+import { brand, inputStyle, focusBorder, blurBorder } from "../config/theme";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,10 +10,11 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const loginUser = async () => {
     if (!email || !password) {
-      alert("Please enter email and password");
+      toast.error("Please enter email and password");
       return;
     }
 
@@ -26,22 +29,14 @@ export default function Login() {
       });
 
       const data = await res.json();
-      console.log("LOGIN RESPONSE:", data);
 
       if (data.message === "Login successful") {
-        alert("Login success");
-
         localStorage.clear();
 
         localStorage.setItem("role", data.role || "user");
 
 
         localStorage.setItem("plan", data.plan || "free");
-
-
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-        }
 
 
         if (data.user_id) {
@@ -51,10 +46,10 @@ export default function Login() {
 
         navigate("/dashboard");
       } else {
-        alert(data.detail || data.error || "Login failed");
+        toast.error(data.detail || data.error || "Login failed");
       }
     } catch (err) {
-      alert("Server error: " + err.message);
+      toast.error("Server error: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -64,16 +59,16 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen"
-      style={{ background: "linear-gradient(135deg, #f0f4ff 0%, #e8e0ff 100%)" }}>
+      style={{ background: brand.pageGradient }}>
 
 
       <div className="hidden md:flex flex-col justify-center px-16 flex-1"
-        style={{ background: "linear-gradient(135deg, #1a1a6e, #4f46e5, #7c3aed)" }}>
+        style={{ background: brand.panelGradient }}>
 
         <div className="flex items-center gap-3 mb-10">
           <span className="text-4xl">🛡️</span>
           <span className="font-extrabold text-2xl text-white">
-            ZRTO <span style={{ color: "#fb923c" }}>AI</span>
+            ZRTO <span style={{ color: brand.accentLight }}>AI</span>
           </span>
         </div>
 
@@ -106,7 +101,7 @@ export default function Login() {
           </p>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-extrabold text-white"
-              style={{ background: "linear-gradient(135deg, #f97316, #fb923c)" }}>R</div>
+              style={{ background: `linear-gradient(135deg, ${brand.accent}, ${brand.accentLight})` }}>R</div>
             <div>
               <div className="text-white text-xs font-bold">Rahul S.</div>
               <div className="text-indigo-300 text-xs">D2C Fashion Brand, Mumbai</div>
@@ -122,24 +117,27 @@ export default function Login() {
 
           <div className="flex items-center gap-2 justify-center mb-8 md:hidden">
             <span className="text-3xl">🛡️</span>
-            <span className="font-extrabold text-xl" style={{ color: "#1e1b4b" }}>
-              ZRTO <span style={{ color: "#f97316" }}>AI</span>
+            <span className="font-extrabold text-xl" style={{ color: brand.ink }}>
+              ZRTO <span style={{ color: brand.accent }}>AI</span>
             </span>
           </div>
 
           <div className="rounded-3xl p-8 shadow-2xl"
-            style={{ background: "#fff", border: "2px solid #e0e7ff" }}>
+            style={{ background: "#fff", border: `2px solid ${brand.border}` }}>
 
-            <h2 className="text-2xl font-extrabold mb-1" style={{ color: "#1e1b4b" }}>
+            <h2 className="text-2xl font-extrabold mb-1" style={{ color: brand.ink }}>
               Login to Dashboard
             </h2>
-            <p className="text-sm mb-7" style={{ color: "#6b7280" }}>
+            <p className="text-sm mb-5" style={{ color: brand.muted }}>
               Enter your credentials to access your account.
             </p>
 
+
+
+
             <div className="mb-4">
               <label className="text-xs font-bold uppercase tracking-wide mb-1.5 block"
-                style={{ color: "#6b7280" }}>Email Address</label>
+                style={{ color: brand.muted }}>Email Address</label>
               <input
                 id="email"
                 name="email"
@@ -147,17 +145,18 @@ export default function Login() {
                 placeholder="john@yourbrand.com"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && loginUser()}
                 className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none transition-colors"
-                style={{ background: "#f5f3ff", border: "2px solid #e0e7ff", color: "#1e1b4b" }}
-                onFocus={e => e.target.style.borderColor = "#4f46e5"}
-                onBlur={e => e.target.style.borderColor = "#e0e7ff"}
+                style={{ background: brand.surface, border: `2px solid ${brand.border}`, color: brand.ink }}
+                onFocus={e => focusBorder(e)}
+                onBlur={e => blurBorder(e)}
               />
             </div>
 
             <div className="mb-6 relative">
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-xs font-bold uppercase tracking-wide"
-                  style={{ color: "#6b7280" }}>
+                  style={{ color: brand.muted }}>
                   Password
                 </label>
 
@@ -165,7 +164,7 @@ export default function Login() {
                 <span
                   onClick={() => navigate("/forgot-password")}
                   className="text-xs font-bold cursor-pointer"
-                  style={{ color: "#4f46e5" }}
+                  style={{ color: brand.primary }}
                 >
                   Forgot?
                 </span>
@@ -177,11 +176,7 @@ export default function Login() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="w-full px-4 py-3 pr-12 rounded-xl text-sm focus:outline-none"
-                style={{
-                  background: "#f5f3ff",
-                  border: "2px solid #e0e7ff",
-                  color: "#1e1b4b"
-                }}
+                style={inputStyle}
               />
 
               <span
@@ -198,9 +193,7 @@ export default function Login() {
               disabled={loading}
               className="w-full py-3.5 rounded-xl font-extrabold text-white transition-all mb-5"
               style={{
-                background: loading
-                  ? "#a5b4fc"
-                  : "linear-gradient(135deg, #4f46e5, #7c3aed)",
+                background: loading ? brand.disabled : brand.gradient,
                 boxShadow: loading ? "none" : "0 4px 16px rgba(79,70,229,0.35)",
                 cursor: loading ? "not-allowed" : "pointer",
               }}
@@ -212,22 +205,22 @@ export default function Login() {
 
 
             <div className="flex items-center gap-3 mb-5">
-              <div className="flex-1 h-px" style={{ background: "#e0e7ff" }} />
-              <span className="text-xs font-semibold" style={{ color: "#9ca3af" }}>OR</span>
-              <div className="flex-1 h-px" style={{ background: "#e0e7ff" }} />
+              <div className="flex-1 h-px" style={{ background: brand.border }} />
+              <span className="text-xs font-semibold" style={{ color: brand.faint }}>OR</span>
+              <div className="flex-1 h-px" style={{ background: brand.border }} />
             </div>
 
 
             <div className="rounded-xl p-4 text-center"
-              style={{ background: "#f5f3ff", border: "2px solid #e0e7ff" }}>
-              <p className="text-sm" style={{ color: "#6b7280" }}>
+              style={{ background: brand.surface, border: `2px solid ${brand.border}` }}>
+              <p className="text-sm" style={{ color: brand.muted }}>
                 Don't have an account?{" "}
                 <Link to="/register" className="font-extrabold"
-                  style={{ color: "#4f46e5" }}>
+                  style={{ color: brand.primary }}>
                   Create Free Account →
                 </Link>
               </p>
-              <p className="text-xs mt-1" style={{ color: "#9ca3af" }}>
+              <p className="text-xs mt-1" style={{ color: brand.faint }}>
                 50 free predictions. No credit card required.
               </p>
             </div>
@@ -237,7 +230,7 @@ export default function Login() {
 
           <div className="text-center mt-5">
             <Link to="/" className="text-xs font-semibold"
-              style={{ color: "#6b7280" }}>
+              style={{ color: brand.muted }}>
               ← Back to Home
             </Link>
           </div>

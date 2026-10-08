@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastProvider } from "./components/Toast.jsx";
 
 import Dashboard from "./pages/Dashboard.jsx";
 import PredictOrders from "./pages/preditctorders.jsx";
@@ -31,6 +32,7 @@ import AdminRoute from "./pages/AdminRoute.jsx";
 
 function App() {
   return (
+    <ToastProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -182,6 +184,7 @@ function App() {
         />
       </Routes>
     </BrowserRouter>
+    </ToastProvider>
   );
 }
 
