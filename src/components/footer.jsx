@@ -47,7 +47,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="max-w-7xl mx-auto pt-6 flex items-center justify-between text-xs" style={{ borderTop: "1px solid rgba(165,180,252,0.2)", color: "#6366f1" }}>
-            <span>© {new Date().getFullYear()} RTO Shield AI. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} ZRTO. All rights reserved.</span>
             <div className="flex gap-4">
               {["LinkedIn", "Instagram", "YouTube"].map(s => <span key={s} className="hover:text-white cursor-pointer transition-colors">{s}</span>)}
             </div>

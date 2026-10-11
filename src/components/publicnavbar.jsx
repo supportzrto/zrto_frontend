@@ -83,6 +83,8 @@ export default function PublicNavbar() {
           {[
             { label: "Home", path: "/" },
             { label: "Pricing", path: "/pricing" },
+            { label: "About US", path: "/about" },
+            { label: "Contact US", path: "/contact" },
             { label: "Login", path: "/login" },
           ].map(item => (
             <button
