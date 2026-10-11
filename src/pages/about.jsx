@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 import Reveal from "../components/Reveal";
+import Icon from "../components/Icons";
 import { brand } from "../config/theme";
 
 const principles = [
-  { icon: "📐", title: "Data over gut feeling", desc: "Every decision comes from a risk score built on 15 order signals, not a hunch or a phone call.", tint: "#eef2ff", ring: "#c7d2fe", color: brand.primary },
-  { icon: "🇮🇳", title: "Built for India", desc: "Pincode-level risk, COD behaviour and WhatsApp-first confirmation, because that is how Indian ecommerce actually works.", tint: "#fff7ed", ring: "#fed7aa", color: "#c2410c" },
-  { icon: "🔒", title: "Privacy by default", desc: "Customer data is used to produce a prediction. Credentials are write-only and API keys are unique to each account.", tint: "#f0fdf4", ring: "#bbf7d0", color: "#15803d" },
-  { icon: "🤝", title: "Customers stay in control", desc: "Instead of silently cancelling, medium-risk customers get a chance to confirm their own order.", tint: "#faf5ff", ring: "#e9d5ff", color: brand.primaryDark },
+  { icon: "ruler", title: "Data over gut feeling", desc: "Every decision comes from a risk score built on 15 order signals, not a hunch or a phone call.", tint: "#eef2ff", ring: "#c7d2fe", color: brand.primary },
+  { icon: "flag", title: "Built for India", desc: "Pincode-level risk, COD behaviour and WhatsApp-first confirmation, because that is how Indian ecommerce actually works.", tint: "#fff7ed", ring: "#fed7aa", color: "#c2410c" },
+  { icon: "lock", title: "Privacy by default", desc: "Customer data is used to produce a prediction. Credentials are write-only and API keys are unique to each account.", tint: "#f0fdf4", ring: "#bbf7d0", color: "#15803d" },
+  { icon: "handshake", title: "Customers stay in control", desc: "Instead of silently cancelling, medium-risk customers get a chance to confirm their own order.", tint: "#faf5ff", ring: "#e9d5ff", color: brand.primaryDark },
 ];
 
 const decisions = [
@@ -115,7 +116,7 @@ export default function About() {
               {principles.map((p, i) => (
                 <Reveal key={p.title} delay={(i % 2) * 100}>
                   <div className="h-full rounded-3xl p-7 flex gap-5 transition-transform hover:-translate-y-1" style={{ background: p.tint, border: `2px solid ${p.ring}` }}>
-                    <span className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-2xl flex-shrink-0 shadow-sm">{p.icon}</span>
+                    <span className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center flex-shrink-0 shadow-sm" style={{ color: p.color }}><Icon name={p.icon} size={24} /></span>
                     <div>
                       <h3 className="font-extrabold text-lg mb-1.5" style={{ color: p.color }}>{p.title}</h3>
                       <p className="text-sm leading-relaxed" style={{ color: "#4b5563" }}>{p.desc}</p>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import Logo from "./Logo";
 
 export default function PublicNavbar() {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ export default function PublicNavbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav style={{ background: "linear-gradient(135deg, #1a1a6e 0%, #2d2d9b 40%, #4f46e5 100%)", borderBottom: "1px solid rgba(255,255,255,0.1)" }} className="sticky top-0 z-50 px-6 py-4">
+    <nav style={{ background: "linear-gradient(135deg, rgba(26,26,110,0.94) 0%, rgba(45,45,155,0.94) 40%, rgba(79,70,229,0.94) 100%)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", borderBottom: "1px solid rgba(255,255,255,0.1)" }} className="sticky top-0 z-50 px-6 py-4">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
 
         {/* Logo */}
@@ -17,9 +18,7 @@ export default function PublicNavbar() {
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <span className="font-extrabold text-xl text-white tracking-tight">
-            Z<span style={{ color: "#fb923c" }}>RTO</span>
-          </span>
+          <Logo size={34} />
         </div>
 
         {/* Desktop nav links */}

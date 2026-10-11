@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
@@ -6,7 +7,7 @@ export default function Footer() {
           <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10 mb-10">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <span className="font-extrabold text-xl text-white">ZRTO</span>
+                <Logo size={34} />
               </div>
               <p className="text-sm leading-relaxed max-w-xs" style={{ color: "#a5b4fc" }}>AI RTO &amp; COD optimization for Indian Ecommerce and D2C brands. Stop fake orders before they ship.</p>
             </div>

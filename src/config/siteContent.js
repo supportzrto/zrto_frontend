@@ -1,10 +1,22 @@
 // Public-site content that should only ever contain TRUE statements.
 //
-// TESTIMONIALS and LOGOS are intentionally empty. Add real customer quotes and
-// logos (with permission) and the matching sections on the home page appear
-// automatically. Shape:
-//   TESTIMONIALS: [{ name, role, company, location, quote }]
-//   LOGOS:        ["Brand A", "Brand B"]
+// ── HOW TO ADD CUSTOMER TESTIMONIALS ─────────────────────────────────────────
+// Paste real quotes from real customers (with their permission) into TESTIMONIALS
+// below. As soon as there is at least one entry, the "What our customers say"
+// section appears on the home page and the cards scroll right-to-left on loop
+// (hover pauses it). Four to six cards looks best. Example entry:
+//
+//   {
+//     name: "Full Name",
+//     role: "Founder",            // optional
+//     company: "Brand Name",      // optional
+//     location: "City",           // optional
+//     quote: "What they actually said, in their words.",
+//   },
+//
+// Run `npm run dev` with this list empty to preview the strip with demo cards
+// (demo cards never appear on the live site).
+// ─────────────────────────────────────────────────────────────────────────────
 export const TESTIMONIALS = [];
 export const LOGOS = [];
 

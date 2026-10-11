@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 import Reveal from "../components/Reveal";
+import Icon from "../components/Icons";
 import { useToast } from "../components/Toast.jsx";
 import { API_URL } from "../config/api";
 import { brand, inputStyle as baseInput, focusBorder, blurBorder } from "../config/theme";
@@ -11,9 +12,9 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const MAX_MESSAGE = 2000;
 
 const cards = [
-  { icon: "📧", label: "Email us", value: CONTACT.email, href: `mailto:${CONTACT.email}`, tint: "#eef2ff", ring: "#c7d2fe" },
-  { icon: "📞", label: "Call us", value: CONTACT.phone, href: CONTACT.phoneHref, tint: "#f0fdf4", ring: "#bbf7d0" },
-  { icon: "📍", label: "Visit us", value: CONTACT.location, href: null, tint: "#fff7ed", ring: "#fed7aa" },
+  { icon: "mail", label: "Email us", value: CONTACT.email, href: `mailto:${CONTACT.email}`, tint: "#eef2ff", ring: "#c7d2fe", color: brand.primary },
+  { icon: "phone", label: "Call us", value: CONTACT.phone, href: CONTACT.phoneHref, tint: "#f0fdf4", ring: "#bbf7d0", color: "#15803d" },
+  { icon: "pin", label: "Visit us", value: CONTACT.location, href: null, tint: "#fff7ed", ring: "#fed7aa", color: "#c2410c" },
 ];
 
 const next = [
@@ -103,7 +104,7 @@ export default function Contact() {
               {cards.map((c, i) => {
                 const inner = (
                   <div className="flex items-center gap-4 rounded-2xl p-5 shadow-md transition-transform hover:-translate-y-1" style={{ background: "#fff", border: `2px solid ${c.ring}` }}>
-                    <span className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0" style={{ background: c.tint }}>{c.icon}</span>
+                    <span className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: c.tint, color: c.color }}><Icon name={c.icon} size={22} /></span>
                     <div className="min-w-0">
                       <div className="text-xs font-bold uppercase tracking-wide" style={{ color: brand.faint }}>{c.label}</div>
                       <div className="font-extrabold truncate" style={{ color: brand.ink }}>{c.value}</div>
@@ -137,7 +138,7 @@ export default function Contact() {
               <div className="rounded-3xl p-7 md:p-10 shadow-2xl" style={{ background: "#fff", border: `2px solid ${brand.border}` }}>
                 {status === "success" ? (
                   <div className="text-center py-10">
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-5" style={{ background: brand.successBg }}>✅</div>
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style={{ background: brand.successBg, color: brand.success }}><Icon name="check" size={32} strokeWidth={3} /></div>
                     <h2 className="text-2xl font-extrabold mb-2" style={{ color: brand.ink }}>Message sent!</h2>
                     <p className="text-sm mb-7" style={{ color: brand.muted }}>Thanks for reaching out. We'll reply within 24–48 hours.</p>
                     <button onClick={() => setStatus("idle")} className="font-extrabold px-6 py-3 rounded-xl text-white" style={{ background: brand.gradient, boxShadow: "0 4px 16px rgba(79,70,229,0.35)" }}>
