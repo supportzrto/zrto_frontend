@@ -225,10 +225,10 @@ export default function PredictOrders() {
             </p>
             <div className="grid grid-cols-2 gap-2">
               {[
-                "✅ 5,000 predictions/month",
-                "✅ Unlimited CSV uploads",
-                "✅ Full API integration",
+                "✅ 5,000 predictions per 30 days",
+                "✅ CSV upload & prediction history",
                 "✅ Priority support",
+                "✅ No auto-renewal, renew anytime",
               ].map(f => (
                 <span key={f} className="text-xs font-semibold" style={{ color: "#78350f" }}>{f}</span>
               ))}
@@ -243,7 +243,7 @@ export default function PredictOrders() {
                 background: "linear-gradient(135deg, #f97316, #fb923c)",
                 boxShadow: "0 4px 16px rgba(249,115,22,0.4)"
               }}>
-              🚀 Upgrade to Pro — ₹999/month
+              🚀 Upgrade to Pro — ₹4,999 for 30 days
             </Link>
             <button
               onClick={() => setLimitError(null)}

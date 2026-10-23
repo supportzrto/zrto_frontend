@@ -13,10 +13,9 @@ export default function ApiIntegration() {
   const [apiKey, setApiKey] = useState(localStorage.getItem("api_key") || "");
   const [platform, setPlatform] = useState("shopify");
   const [codeLang, setCodeLang] = useState("javascript");
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch(`${API_URL}/api/key`, { headers: { token } })
+    fetch(`${API_URL}/api/key`, { credentials: "include" })
       .then(res => res.json())
       .then(data => { if (data.api_key) setApiKey(data.api_key); })
       .catch(() => { });
@@ -27,12 +26,12 @@ export default function ApiIntegration() {
   const platformContent = {
     shopify: {
       title: "Shopify Integration",
-      desc: "Integrate RTO Shield AI into your Shopify store to automatically score every COD order at checkout in real time.",
+      desc: "Integrate ZRTO into your Shopify store to automatically score every COD order at checkout in real time.",
       steps: [
         { title: "Set Up a Webhook", desc: "In Shopify Admin → Settings → Notifications → Webhooks → Add webhook for 'Order creation'." },
         { title: "Point to Your Backend", desc: "Your webhook URL should be your server endpoint that calls our API." },
-        { title: "Add the Code Below", desc: "Use the code snippet to call RTO Shield AI from your webhook handler." },
-        { title: "Test with a COD Order", desc: "Place a test COD order and check the risk score in your RTO Shield AI dashboard." },
+        { title: "Add the Code Below", desc: "Use the code snippet to call ZRTO from your webhook handler." },
+        { title: "Test with a COD Order", desc: "Place a test COD order and check the risk score in your ZRTO dashboard." },
       ],
       tips: [
         "Only call the API for COD orders — skip prepaid to save predictions.",
@@ -221,12 +220,12 @@ function rto_shield_check_order($order_id, $posted_data, $order) {
   if ($risk['decision'] === 'BLOCK_COD') {
     $order->update_status(
       'cancelled',
-      'RTO Shield AI: High risk COD order blocked.'
+      'ZRTO: High risk COD order blocked.'
     );
   } elseif ($risk['decision'] === 'VERIFY') {
     $order->update_status(
       'on-hold',
-      'RTO Shield AI: Verification required.'
+      'ZRTO: Verification required.'
     );
   }
 }
@@ -437,7 +436,7 @@ print("Now upload this file on the Predict Orders page.")`,
           style={{ background: "rgba(255,255,255,0.15)" }}>⚡</div>
         <div>
           <h1 className="text-2xl font-extrabold text-white">API Integration</h1>
-          <p className="text-indigo-200 text-sm">Connect RTO Shield AI to your store in minutes</p>
+          <p className="text-indigo-200 text-sm">Connect ZRTO to your store in minutes</p>
         </div>
       </div>
 

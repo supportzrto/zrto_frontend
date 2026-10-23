@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { API_URL } from "../config/api";
 import { useNavigate, Link } from "react-router-dom";
+import Logo from "../components/Logo";
 import { useToast } from "../components/Toast.jsx";
+import { TESTIMONIALS } from "../config/siteContent";
 import { brand, inputStyle, focusBorder, blurBorder } from "../config/theme";
 
 export default function Login() {
@@ -65,12 +67,7 @@ export default function Login() {
       <div className="hidden md:flex flex-col justify-center px-16 flex-1"
         style={{ background: brand.panelGradient }}>
 
-        <div className="flex items-center gap-3 mb-10">
-          <span className="text-4xl">🛡️</span>
-          <span className="font-extrabold text-2xl text-white">
-            ZRTO <span style={{ color: brand.accentLight }}>AI</span>
-          </span>
-        </div>
+        <div className="mb-10"><Logo size={44} /></div>
 
         <h2 className="text-4xl font-extrabold text-white leading-tight mb-5">
           Welcome Back!
@@ -96,17 +93,33 @@ export default function Login() {
 
         <div className="mt-12 rounded-2xl p-5"
           style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}>
-          <p className="text-indigo-100 text-sm leading-relaxed mb-3">
-            "RTO Shield AI helped us reduce COD returns by 65% in the first month. Absolutely worth it!"
-          </p>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-extrabold text-white"
-              style={{ background: `linear-gradient(135deg, ${brand.accent}, ${brand.accentLight})` }}>R</div>
-            <div>
-              <div className="text-white text-xs font-bold">Rahul S.</div>
-              <div className="text-indigo-300 text-xs">D2C Fashion Brand, Mumbai</div>
-            </div>
-          </div>
+          {TESTIMONIALS.length > 0 ? (
+            <>
+              <p className="text-indigo-100 text-sm leading-relaxed mb-3">“{TESTIMONIALS[0].quote}”</p>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-extrabold text-white"
+                  style={{ background: `linear-gradient(135deg, ${brand.accent}, ${brand.accentLight})` }}>{TESTIMONIALS[0].name[0]}</div>
+                <div>
+                  <div className="text-white text-xs font-bold">{TESTIMONIALS[0].name}</div>
+                  <div className="text-indigo-300 text-xs">{[TESTIMONIALS[0].role, TESTIMONIALS[0].company].filter(Boolean).join(", ")}</div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-white text-xs font-bold uppercase tracking-widest mb-3">Every COD order gets one outcome</p>
+              {[
+                ["#4ade80", "Low risk", "Allow"],
+                ["#fbbf24", "Medium risk", "Verify on WhatsApp"],
+                ["#f87171", "High risk", "Block or go prepaid"],
+              ].map(([c, tag, act]) => (
+                <div key={tag} className="flex items-center justify-between text-sm py-1.5">
+                  <span className="flex items-center gap-2 text-indigo-200"><span className="w-2 h-2 rounded-full" style={{ background: c }} />{tag}</span>
+                  <span className="text-white font-semibold">{act}</span>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </div>
 
@@ -115,12 +128,7 @@ export default function Login() {
         <div className="w-full max-w-md">
 
 
-          <div className="flex items-center gap-2 justify-center mb-8 md:hidden">
-            <span className="text-3xl">🛡️</span>
-            <span className="font-extrabold text-xl" style={{ color: brand.ink }}>
-              ZRTO <span style={{ color: brand.accent }}>AI</span>
-            </span>
-          </div>
+          <div className="flex justify-center mb-8 md:hidden"><Logo size={36} dark /></div>
 
           <div className="rounded-3xl p-8 shadow-2xl"
             style={{ background: "#fff", border: `2px solid ${brand.border}` }}>

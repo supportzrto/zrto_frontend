@@ -36,7 +36,8 @@ export default function Footer() {
                   { name: "About Us", path: "/about" },
                   { name: "Contact", path: "/contact" },
                   { name: "Privacy Policy", path: "/privacy" },
-                  { name: "Terms of Service", path: "/terms" }
+                  { name: "Terms of Service", path: "/terms" },
+                  { name: "Refund & Cancellation", path: "/refund" }
                 ].map(item => (
                   <div key={item.name}>
                     <Link to={item.path} className="hover:text-white transition-colors">
@@ -49,9 +50,7 @@ export default function Footer() {
           </div>
           <div className="max-w-7xl mx-auto pt-6 flex items-center justify-between text-xs" style={{ borderTop: "1px solid rgba(165,180,252,0.2)", color: "#6366f1" }}>
             <span>© {new Date().getFullYear()} ZRTO. All rights reserved.</span>
-            <div className="flex gap-4">
-              {["LinkedIn", "Instagram", "YouTube"].map(s => <span key={s} className="hover:text-white cursor-pointer transition-colors">{s}</span>)}
-            </div>
+            <span>Made in India 🇮🇳</span>
           </div>
         </footer>   
   );

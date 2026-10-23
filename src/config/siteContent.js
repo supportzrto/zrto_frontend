@@ -27,3 +27,13 @@ export const CONTACT = {
   phoneHref: "tel:+917093419456",
   location: "Hyderabad, India",
 };
+
+// Shown on the Privacy, Terms and Refund pages. Fill these in with your registered details
+// (a legal entity name and a named grievance officer are expected under Indian law).
+export const LEGAL = {
+  productName: "ZRTO",
+  entityName: "ZRTO", // e.g. "ZRTO Technologies Private Limited"
+  address: "Hyderabad, India", // full registered address
+  grievanceOfficer: "", // e.g. "Full Name, Founder"; leave empty to omit the line
+  updated: "October 2026",
+};

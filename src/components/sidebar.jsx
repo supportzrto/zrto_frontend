@@ -92,7 +92,7 @@ export default function Sidebar() {
           Free Plan
         </p>
         <p className="text-xs" style={{ color: "#a5b4fc" }}>
-          50 predictions/month
+          50 free predictions
         </p>
         <Link
           to="/pricing"

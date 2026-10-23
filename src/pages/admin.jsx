@@ -1,9 +1,28 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
+import { useToast } from "../components/Toast.jsx";
+import { API_URL } from "../config/api";
 
 export default function Admin() {
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
+  const toast = useToast();
+
+  const setApiAccess = async (id, enabled) => {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/users/${id}/api-access`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ enabled }),
+      });
+      if (!res.ok) throw new Error();
+      setUsers(prev => prev.map(u => (u.id === id ? { ...u, api_enabled: enabled } : u)));
+      toast.success(enabled ? "API access enabled. The merchant can see their key on the API Access page." : "API access switched off.");
+    } catch {
+      toast.error("Could not update API access.");
+    }
+  };
   const [loading, setLoading] = useState(true);
   const [payments, setPayments] = useState([]);
   const [leads, setLeads] = useState([]);
@@ -86,17 +105,15 @@ export default function Admin() {
           {/* Main stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {[
-              { label: "Total Users", value: stats?.total_users ?? 0, icon: "👥", color: "#4f46e5", bg: "#e0e7ff", trend: "+12%" },
-              { label: "Total Predictions", value: (stats?.total_predictions ?? 0).toLocaleString("en-IN"), icon: "🤖", color: "#7c3aed", bg: "#ede9fe", trend: "+28%" },
-              { label: "Total Savings Generated", value: `₹${Number(stats?.total_savings ?? 0).toLocaleString("en-IN")}`, icon: "💰", color: "#16a34a", bg: "#dcfce7", trend: "+35%" },
+              { label: "Total Users", value: stats?.total_users ?? 0, icon: "👥", color: "#4f46e5", bg: "#e0e7ff" },
+              { label: "Total Predictions", value: (stats?.total_predictions ?? 0).toLocaleString("en-IN"), icon: "🤖", color: "#7c3aed", bg: "#ede9fe" },
+              { label: "Total Savings Generated", value: `₹${Number(stats?.total_savings ?? 0).toLocaleString("en-IN")}`, icon: "💰", color: "#16a34a", bg: "#dcfce7" },
             ].map(card => (
               <div key={card.label} className="rounded-2xl p-6 shadow-md hover:-translate-y-1 transition-transform"
                 style={{ background: card.bg, border: `2px solid ${card.color}25` }}>
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
                     style={{ background: `${card.color}20` }}>{card.icon}</div>
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full"
-                    style={{ background: "#dcfce7", color: "#16a34a" }}>{card.trend}</span>
                 </div>
                 <div className="text-xs font-semibold mb-1" style={{ color: "#6b7280" }}>{card.label}</div>
                 <div className="text-3xl font-extrabold" style={{ color: card.color }}>{card.value}</div>
@@ -107,8 +124,8 @@ export default function Admin() {
           {/* Extra stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {[
-              { label: "Free Plan Users", value: Math.floor((stats?.total_users ?? 0) * 0.7), icon: "✨", color: "#4f46e5", bg: "#f5f3ff" },
-              { label: "Pro Plan Users", value: Math.floor((stats?.total_users ?? 0) * 0.3), icon: "⭐", color: "#ea580c", bg: "#fff7ed" },
+              { label: "Free Plan Users", value: users.filter(u => u.plan === "free").length, icon: "✨", color: "#4f46e5", bg: "#f5f3ff" },
+              { label: "Pro Plan Users", value: users.filter(u => u.plan !== "free").length, icon: "⭐", color: "#ea580c", bg: "#fff7ed" },
               { label: "Avg Predictions/User", value: stats?.total_users ? Math.floor((stats?.total_predictions ?? 0) / stats.total_users) : 0, icon: "📊", color: "#0891b2", bg: "#ecfeff" },
               { label: "Avg Savings/User", value: `₹${stats?.total_users ? Math.floor((stats?.total_savings ?? 0) / stats.total_users).toLocaleString("en-IN") : 0}`, icon: "💵", color: "#16a34a", bg: "#f0fdf4" },
             ].map(card => (
@@ -145,6 +162,7 @@ export default function Admin() {
                   <th className="p-2">Email</th>
                   <th className="p-2">Plan</th>
                   <th className="p-2">Usage</th>
+                  <th className="p-2">API access</th>
                 </tr>
               </thead>
               <tbody>
@@ -153,6 +171,17 @@ export default function Admin() {
                     <td className="p-2">{u.email}</td>
                     <td className="p-2">{u.plan}</td>
                     <td className="p-2">{u.usage}</td>
+                    <td className="p-2">
+                      <button
+                        onClick={() => setApiAccess(u.id, !u.api_enabled)}
+                        className="px-3 py-1 rounded-lg text-xs font-bold"
+                        style={u.api_enabled
+                          ? { background: "#dcfce7", color: "#15803d" }
+                          : { background: "#e0e7ff", color: "#4338ca" }}
+                      >
+                        {u.api_enabled ? "On · switch off" : "Enable"}
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -172,7 +201,7 @@ export default function Admin() {
                 {payments.map((p, i) => (
                   <tr key={i} className="border-t text-center">
                     <td className="p-2">{p.user_id}</td>
-                    <td className="p-2">₹{p.amount}</td>
+                    <td className="p-2">₹{(Number(p.amount) / 100).toLocaleString("en-IN")}</td>
                     <td className="p-2">
                       {p.date ? new Date(p.date).toLocaleDateString() : "-"}
                     </td>

@@ -1,9 +1,7 @@
 export async function getUsage() {
 
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/usage`, {
-    headers: {
-      token: localStorage.getItem("token")
-    }
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/usage`, {
+    credentials: "include",
   });
 
   return res.json();

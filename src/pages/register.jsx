@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { API_URL } from "../config/api";
 import { useNavigate, Link } from "react-router-dom";
+import Logo from "../components/Logo";
 import { useToast } from "../components/Toast.jsx";
 import { brand, inputStyle, focusBorder, blurBorder } from "../config/theme";
 
@@ -22,8 +23,8 @@ export default function Register() {
       toast.error("Please fill in all fields");
       return;
     }
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters");
       return;
     }
 
@@ -98,10 +99,7 @@ export default function Register() {
       {/* Left — branding */}
       <div className="hidden md:flex flex-col justify-center px-16 flex-1"
         style={{ background: brand.panelGradient }}>
-        <div className="flex items-center gap-3 mb-10">
-          <span className="text-4xl">🛡️</span>
-          <span className="font-extrabold text-2xl text-white">RTO Shield <span style={{ color: brand.accentLight }}>AI</span></span>
-        </div>
+        <div className="mb-10"><Logo size={44} /></div>
         <h2 className="text-4xl font-extrabold text-white leading-tight mb-5">
           Stop Losing Money<br />on COD Orders
         </h2>
@@ -113,7 +111,7 @@ export default function Register() {
             { icon: "✅", text: "50 free predictions — no credit card needed" },
             { icon: "🤖", text: "AI-powered risk scoring in seconds" },
             { icon: "📊", text: "CSV upload or direct API integration" },
-            { icon: "💰", text: "Average ₹28,000 saved per month" },
+            { icon: "💬", text: "WhatsApp confirmation for risky COD orders" },
           ].map(item => (
             <div key={item.text} className="flex items-center gap-3">
               <span className="text-lg">{item.icon}</span>
@@ -128,12 +126,7 @@ export default function Register() {
         <div className="w-full max-w-md">
 
           {/* Mobile logo */}
-          <div className="flex items-center gap-2 justify-center mb-8 md:hidden">
-            <span className="text-3xl">🛡️</span>
-            <span className="font-extrabold text-xl" style={{ color: brand.ink }}>
-              ZRTO <span style={{ color: brand.accent }}>AI</span>
-            </span>
-          </div>
+          <div className="flex justify-center mb-8 md:hidden"><Logo size={36} dark /></div>
 
           <div className="rounded-3xl p-8 shadow-2xl"
             style={{ background: "#fff", border: `2px solid ${brand.border}` }}>

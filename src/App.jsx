@@ -17,6 +17,7 @@ import About from "./pages/about.jsx";
 import Contact from "./pages/contact.jsx";
 import Privacy from "./pages/privacy.jsx";
 import Terms from "./pages/terms.jsx";
+import Refund from "./pages/refund.jsx";
 import ForgotPassword from "./pages/forgotpassword.jsx";
 import NotFound from "./pages/NotFound";
 import WhatsAppDashboard from "./components/whatsapp/WhatsAppDashboard.jsx";
@@ -42,6 +43,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/refund" element={<Refund />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route

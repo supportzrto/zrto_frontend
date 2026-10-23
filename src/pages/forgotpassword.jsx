@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { API_URL } from "../config/api";
 import { useNavigate, Link } from "react-router-dom";
+import Logo from "../components/Logo";
 import { useToast } from "../components/Toast.jsx";
 import { brand, inputStyle, focusBorder, blurBorder } from "../config/theme";
 
@@ -140,12 +141,7 @@ export default function ForgotPassword() {
       style={{ background: brand.pageGradient }}
     >
       <div className="w-full max-w-md">
-        <div className="flex items-center gap-2 justify-center mb-8">
-          <span className="text-3xl">🛡️</span>
-          <span className="font-extrabold text-xl" style={{ color: brand.ink }}>
-            ZRTO <span style={{ color: brand.accent }}>AI</span>
-          </span>
-        </div>
+        <div className="flex justify-center mb-8"><Logo size={36} dark /></div>
 
         <div className="rounded-3xl p-8 shadow-2xl" style={{ background: "#fff", border: `2px solid ${brand.border}` }}>
           {resetDone ? (

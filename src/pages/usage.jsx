@@ -114,10 +114,10 @@ export default function UsagePage() {
             <div className="text-3xl mb-3">🚀</div>
             <h3 className="font-extrabold text-lg mb-2" style={{ color: "#c2410c" }}>Need More Predictions?</h3>
             <p className="text-sm leading-relaxed mb-5" style={{ color: "#78350f" }}>
-              Upgrade to Pro for 5,000 predictions/month, full API access, and priority support.
+              Upgrade to Pro for 5,000 predictions per 30 days and priority support.
             </p>
             <div className="text-2xl font-extrabold mb-5" style={{ color: "#ea580c" }}>
-              ₹4999 <span className="text-sm font-semibold" style={{ color: "#9a3412" }}>/month</span>
+              ₹4,999 <span className="text-sm font-semibold" style={{ color: "#9a3412" }}>for 30 days</span>
             </div>
             <Link to="/pricing"
               className="inline-block px-6 py-3 rounded-xl font-extrabold text-sm text-white transition-all hover:scale-105"

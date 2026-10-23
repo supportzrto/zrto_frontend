@@ -11,10 +11,9 @@ export default function ApiKeyPage() {
   const [loading, setLoading] = useState(false);
   const [showKey, setShowKey] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch(`${API_URL}/api/key`, { headers: { token } })
+    fetch(`${API_URL}/api/key`, { credentials: "include" })
       .then(res => res.json())
       .then(data => {
         setApiPurchased(data.api_purchased ?? false);
@@ -36,7 +35,7 @@ export default function ApiKeyPage() {
     if (!confirm("Regenerate API key? Your old key will stop working immediately.")) return;
     setLoading(true);
     const res = await fetch(`${API_URL}/api/regenerate-key`, {
-      method: "POST", headers: { token },
+      method: "POST", credentials: "include",
     });
     const data = await res.json();
     setApiKey(data.api_key || "");
@@ -46,7 +45,7 @@ export default function ApiKeyPage() {
 
   const toggleKey = async () => {
     const endpoint = enabled ? "/api/key/disable" : "/api/key/enable";
-    await fetch(`${API_URL}${endpoint}`, { method: "POST", headers: { token } });
+    await fetch(`${API_URL}${endpoint}`, { method: "POST", credentials: "include" });
     setEnabled(!enabled);
   };
 
@@ -102,27 +101,27 @@ export default function ApiKeyPage() {
             style={{ background: "linear-gradient(135deg, #fff7ed, #ffedd5)", border: "2px solid #fed7aa" }}>
             <div className="text-6xl mb-5">🔒</div>
             <h2 className="text-2xl font-extrabold mb-3" style={{ color: "#c2410c" }}>
-              API Access is a Paid Feature
+              Get API Access
             </h2>
             <p className="text-sm mb-8 max-w-lg mx-auto leading-relaxed" style={{ color: "#78350f" }}>
-              Purchase API access to integrate RTO Shield AI directly into your Shopify, WooCommerce,
-              or custom store. Get a unique API key and score orders in real-time before dispatch.
+              API access connects ZRTO directly to your Shopify, WooCommerce or custom store, so every COD
+              order is scored in real time before dispatch. Our team switches it on for your account:
+              tell us about your store and we'll enable your key.
             </p>
 
-            {/* Price */}
+            {/* How it is enabled */}
             <div className="inline-block rounded-2xl px-10 py-6 mb-8"
               style={{ background: "#fff", border: "2px solid #fed7aa", boxShadow: "0 4px 16px rgba(249,115,22,0.15)" }}>
-              <div className="text-4xl font-extrabold mb-1" style={{ color: "#ea580c" }}>
-                ₹499
-                <span className="text-lg font-semibold ml-1" style={{ color: "#9a3412" }}>/month</span>
+              <div className="text-xl font-extrabold mb-1" style={{ color: "#ea580c" }}>
+                Enabled by our team
               </div>
-              <p className="text-xs" style={{ color: "#6b7280" }}>Billed monthly · Cancel anytime</p>
+              <p className="text-xs" style={{ color: "#6b7280" }}>Your key appears on this page once access is on</p>
             </div>
 
             {/* Features */}
             <div className="grid md:grid-cols-2 gap-3 max-w-md mx-auto mb-8 text-left">
               {[
-                "✅ Unique API key generated instantly",
+                "✅ Unique API key for your account",
                 "✅ 60 API requests per minute",
                 "✅ Shopify & WooCommerce ready",
                 "✅ Real-time COD risk scoring",
@@ -133,10 +132,10 @@ export default function ApiKeyPage() {
               ))}
             </div>
 
-            <Link to="/pricing"
+            <Link to="/contact"
               className="inline-block px-10 py-4 rounded-xl font-extrabold text-white text-base transition-all hover:scale-105"
               style={{ background: "linear-gradient(135deg, #f97316, #fb923c)", boxShadow: "0 8px 24px rgba(249,115,22,0.4)" }}>
-              🚀 Purchase API Access — ₹499/month
+              🚀 Request API access
             </Link>
 
             <p className="text-xs mt-4" style={{ color: "#9ca3af" }}>
@@ -147,7 +146,7 @@ export default function ApiKeyPage() {
           {/* What you get */}
           <div className="grid md:grid-cols-3 gap-5 mb-8">
             {[
-              { icon: "⚡", title: "Instant Integration", desc: "Get your API key immediately after purchase. Start scoring orders in minutes.", color: "#4f46e5", bg: "#e0e7ff" },
+              { icon: "⚡", title: "Instant Integration", desc: "Your API key shows up here as soon as access is enabled. Start scoring orders right away.", color: "#4f46e5", bg: "#e0e7ff" },
               { icon: "🛡️", title: "Secure & Reliable", desc: "Enterprise-grade security. Your key is encrypted and can be rotated anytime.", color: "#16a34a", bg: "#dcfce7" },
               { icon: "📊", title: "Full Analytics", desc: "Every API call is logged in your dashboard with risk scores and decisions.", color: "#ea580c", bg: "#ffedd5" },
             ].map(item => (
@@ -174,7 +173,7 @@ export default function ApiKeyPage() {
 
             <div className="grid md:grid-cols-6 gap-4 text-center">
               {[
-                "Purchase API",
+                "Request Access",
                 "Get API Key",
                 "Integrate Store",
                 "Send Orders",
@@ -299,7 +298,7 @@ export default function ApiKeyPage() {
                 <div className="w-3 h-3 rounded-full bg-green-400" />
               </div>
               <span className="ml-3 text-xs font-bold text-indigo-300">
-                API Code Example — Unlock after purchase
+                API Code Example — unlocks when API access is enabled
               </span>
             </div>
             <div style={{ filter: "blur(4px)", pointerEvents: "none" }}>
@@ -325,11 +324,11 @@ export default function ApiKeyPage() {
               style={{ top: "44px", left: 0, right: 0, bottom: 0, background: "rgba(15,23,42,0.6)" }}>
               <div className="text-center">
                 <div className="text-4xl mb-2">🔒</div>
-                <p className="text-white font-bold text-sm">Purchase API access to unlock</p>
-                <Link to="/pricing"
+                <p className="text-white font-bold text-sm">API access is not enabled yet</p>
+                <Link to="/contact"
                   className="inline-block mt-3 px-5 py-2 rounded-xl text-xs font-extrabold text-white"
                   style={{ background: "linear-gradient(135deg, #f97316, #fb923c)" }}>
-                  Purchase Now →
+                  Request access →
                 </Link>
               </div>
             </div>

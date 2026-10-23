@@ -1,0 +1,17 @@
+# ZRTO
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /predict
+Disallow: /whatsapp
+Disallow: /history
+Disallow: /api-access
+Disallow: /api
+Disallow: /usage
+Disallow: /pricing
+Disallow: /admin
+Disallow: /account
+Disallow: /forgot-password
+
+# Update this URL when you move to your own domain.
+Sitemap: https://zrto.vercel.app/sitemap.xml

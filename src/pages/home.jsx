@@ -16,7 +16,7 @@ const faqs = [
   { q: "Is this only for COD orders?", a: "Yes. ZRTO is built specifically to cut losses from Cash on Delivery orders. It scores every COD order before dispatch, and prepaid orders are never affected." },
   { q: "Do I need a developer to set this up?", a: "No. You can upload a CSV from your dashboard with zero technical knowledge. If you want real-time scoring at checkout, our REST API needs basic developer help." },
   { q: "Will this reduce my overall orders?", a: "No. Only genuinely risky COD orders are touched. Low-risk orders go straight through, and medium-risk orders just get a quick WhatsApp confirmation." },
-  { q: "Which platforms do you support?", a: "Today you can use CSV upload or our REST API with any store. Shopify and WooCommerce plugins are coming soon." },
+  { q: "Which platforms do you support?", a: "Any store. Upload a CSV, or connect Shopify, WooCommerce or a custom website through our REST API. Your dashboard has step-by-step guides with ready-to-use code. One-click Shopify and WooCommerce plugins are coming soon." },
   { q: "How does the WhatsApp verification work?", a: "Medium-risk COD orders get a WhatsApp message with Confirm and Cancel buttons. Confirmed orders are marked verified in your dashboard, cancelled ones are flagged, and a reminder is sent automatically if the customer doesn't reply." },
   { q: "Is customer data safe?", a: "We only use customer data to produce a prediction. API keys are unique per account, and your WhatsApp credentials are never shown back once saved." },
   { q: "Can I try this first?", a: "Yes. Sign up free and get 50 predictions at no cost. No credit card required." },
@@ -49,10 +49,10 @@ const builtFor = [
 ];
 
 const integrations = [
-  { icon: "upload", title: "CSV upload", status: "Available now", live: true, desc: "Export orders, upload, and get a decision for every row. No tech team needed." },
-  { icon: "zap", title: "REST API", status: "Available now", live: true, desc: "Score orders in real time at checkout and trigger WhatsApp verification automatically." },
-  { icon: "store", title: "Shopify", status: "Coming soon", live: false, desc: "Auto-sync orders, tag risky ones and manage verification inside Shopify Admin." },
-  { icon: "package", title: "WooCommerce", status: "Coming soon", live: false, desc: "A lightweight plugin that flags risky COD orders at checkout." },
+  { icon: "upload", title: "CSV upload", status: "Available now", tone: "live", desc: "Export orders, upload, and get a decision for every row. No tech team needed." },
+  { icon: "zap", title: "REST API", status: "Available now", tone: "live", desc: "Score orders in real time at checkout and trigger WhatsApp verification automatically." },
+  { icon: "store", title: "Shopify", status: "Works via API", tone: "api", desc: "Score every COD order with a Shopify order webhook and a few lines of code. Step-by-step guide in your dashboard. One-click app coming soon." },
+  { icon: "package", title: "WooCommerce", status: "Works via API", tone: "api", desc: "Hook into WooCommerce order events with PHP or a webhook. Step-by-step guide in your dashboard. One-click plugin coming soon." },
 ];
 
 const stats = [
@@ -561,13 +561,13 @@ export default function Home() {
         {/* ── INTEGRATIONS ── */}
         <section className="py-24 px-6" style={{ background: showTestimonials ? "#f8f9ff" : "#fff" }}>
           <div className="max-w-6xl mx-auto">
-            <SectionHead pill="Integrations" title="Plug in with the stack you already have" sub="Start today with CSV or API. Store plugins are on the way." />
+            <SectionHead pill="Integrations" title="Plug in with the stack you already have" sub="Connect today with a CSV or the REST API. Shopify, WooCommerce and custom websites all use the same API. One-click plugins are on the way." />
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {integrations.map((it, i) => (
                 <Reveal key={it.title} delay={i * 90}>
-                  <div className="zr-card h-full rounded-3xl p-6 relative" style={{ background: it.live ? "#fff" : brand.surface, border: `2px solid ${it.live ? "#86efac" : brand.border}` }}>
-                    <span className="absolute top-4 right-4 text-[10px] px-2.5 py-1 rounded-full font-extrabold uppercase tracking-wide" style={{ background: it.live ? "#dcfce7" : "#e0e7ff", color: it.live ? "#15803d" : "#4338ca" }}>{it.status}</span>
-                    <IconBadge name={it.icon} color={it.live ? "#15803d" : "#4338ca"} bg={it.live ? "#f0fdf4" : "#fff"} />
+                  <div className="zr-card h-full rounded-3xl p-6 relative" style={{ background: "#fff", border: `2px solid ${it.tone === "live" ? "#86efac" : "#93c5fd"}` }}>
+                    <span className="absolute top-4 right-4 text-[10px] px-2.5 py-1 rounded-full font-extrabold uppercase tracking-wide" style={{ background: it.tone === "live" ? "#dcfce7" : "#dbeafe", color: it.tone === "live" ? "#15803d" : "#1d4ed8" }}>{it.status}</span>
+                    <IconBadge name={it.icon} color={it.tone === "live" ? "#15803d" : "#1d4ed8"} bg={it.tone === "live" ? "#f0fdf4" : "#eff6ff"} />
                     <h3 className="font-extrabold mt-4 mb-2" style={{ color: brand.ink }}>{it.title}</h3>
                     <p className="text-sm leading-relaxed" style={{ color: "#4b5563" }}>{it.desc}</p>
                   </div>
